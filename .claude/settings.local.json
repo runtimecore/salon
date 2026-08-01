@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(npm run *)",
+      "Bash(git config *)",
+      "Bash(echo \"user.name: $\\(git config user.name\\)\")",
+      "Bash(echo \"user.email: $\\(git config user.email\\)\")",
+      "Bash(git --version)"
+    ]
+  }
+}

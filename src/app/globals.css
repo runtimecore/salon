@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+  /* Warm, modern palette */
+  --color-cream: #faf5ef;
+  --color-sand: #f2e8db;
+  --color-linen: #f6efe6;
+  --color-ink: #2e251c;
+  --color-espresso: #4a3b2c;
+  --color-muted: #8a7b6b;
+  --color-gold: #bc9a5f;
+  --color-gold-dark: #a9863f;
+  --color-blush: #e8cbc2;
+  --color-rose: #c98b7e;
+
+  /* Fonts (wired up in layout.tsx via next/font) */
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+/* Eyebrow labels above section headings */
+.eyebrow {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* ── Animations ────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatSlow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Hero elements animate in on load; add inline animation-delay to stagger. */
+.hero-enter {
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Gentle floating for decorative background glows. */
+.animate-float {
+  animation: floatSlow 9s ease-in-out infinite;
+}
+.animate-float-slower {
+  animation: floatSlow 13s ease-in-out infinite;
+}
+
+/* Scroll-reveal: hidden until the Reveal component adds .is-visible. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hero-enter,
+  .animate-float,
+  .animate-float-slower,
+  .reveal {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
