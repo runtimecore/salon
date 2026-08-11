@@ -6,7 +6,11 @@
       "Bash(git config *)",
       "Bash(echo \"user.name: $\\(git config user.name\\)\")",
       "Bash(echo \"user.email: $\\(git config user.email\\)\")",
-      "Bash(git --version)"
+      "Bash(git --version)",
+      "WebSearch",
+      "WebFetch(domain:www.fresha.com)",
+      "PowerShell(npm run lint)",
+      "PowerShell(npx eslint . --format stylish; \"EXIT=$LASTEXITCODE\")"
     ]
   }
 }

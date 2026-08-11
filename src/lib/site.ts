@@ -13,6 +13,9 @@ export const site = {
   // TODO: paste your live Fresha booking link here (e.g.
   // "https://www.fresha.com/a/aphrodite-salon-..."). While it's empty,
   // every "Book Now" button stays inert (no navigation) instead of breaking.
+  // This is the general link. For "open Fresha with THIS service already
+  // selected", fill in each service's own `bookingUrl` in lib/services.ts —
+  // services fall back to this link whenever theirs is blank.
   bookingUrl: "",
 
   // Gift cards. Fresha lets businesses sell gift cards online — paste that

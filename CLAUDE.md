@@ -15,7 +15,7 @@ cream / sand / linen (backgrounds), ink / espresso (text), gold + gold-dark (pri
 
 ## Where content lives (edit these, not the components)
 - `src/lib/site.ts` — name, **Fresha `bookingUrl` / `giftCardUrl`**, contact, address, hours, socials, `url` (domain for SEO), gift-card amounts.
-- `src/lib/services.ts` — service categories, names, durations, prices (`popular` flag drives homepage feature + badge).
+- `src/lib/services.ts` — service categories, names, durations, prices (`popular` flag drives homepage feature + badge), and each service's own **Fresha `bookingUrl`** (from Fresha's Link builder) so its "Book" button opens Fresha with that service pre-selected; blank falls back to `site.bookingUrl` via `bookingUrlFor()`.
 - `src/lib/memberships.ts` — membership tiers/perks.
 - Team names: `src/app/about/page.tsx`. Testimonials: `src/app/page.tsx`.
 

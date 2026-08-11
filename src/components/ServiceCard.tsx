@@ -1,4 +1,5 @@
-import type { Service } from "@/lib/services";
+import BookButton from "./BookButton";
+import { bookingUrlFor, type Service } from "@/lib/services";
 
 export default function ServiceCard({ service }: { service: Service }) {
   return (
@@ -18,6 +19,15 @@ export default function ServiceCard({ service }: { service: Service }) {
         </span>
         <span className="font-serif text-lg text-gold-dark">{service.price}</span>
       </div>
+      <BookButton
+        href={bookingUrlFor(service)}
+        variant="outline"
+        size="sm"
+        className="mt-4 w-full"
+        ariaLabel={`Book ${service.name}`}
+      >
+        Book
+      </BookButton>
     </div>
   );
 }
