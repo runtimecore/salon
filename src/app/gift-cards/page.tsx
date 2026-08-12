@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Gift Cards",
-  description: `Give the gift of beauty. Purchase an ${site.name} gift card online — the perfect present for birthdays, holidays, and every occasion.`,
+  description: `Give the gift of self-care. Purchase a ${site.name} gift card online — the perfect present for birthdays, holidays, and every occasion.`,
 };
 
 const giftCardUrl = site.giftCardUrl || site.bookingUrl;
@@ -21,7 +21,7 @@ const steps = [
   },
   {
     title: "They book & glow",
-    body: "The lucky recipient redeems it toward any service or product they love.",
+    body: "The lucky recipient redeems it toward any treatment or product they love.",
   },
 ];
 
@@ -30,8 +30,8 @@ export default function GiftCardsPage() {
     <>
       <PageHero
         eyebrow="Gift Cards"
-        title="Give the gift of beauty"
-        subtitle="An Aphrodite gift card is the perfect present for birthdays, holidays, thank-yous, or just because. Redeemable on any service or product."
+        title="Give the gift of self-care"
+        subtitle={`A ${site.name} gift card is the perfect present for birthdays, holidays, thank-yous, or just because. Redeemable on any treatment or product.`}
       />
 
       {/* Card visual + buy */}
@@ -96,7 +96,7 @@ export default function GiftCardsPage() {
                 Buy a Gift Card
               </ActionLink>
               <p className="mt-3 text-sm text-muted">
-                Prefer in person? Gift cards are also available at the salon.
+                Prefer in person? Gift cards are also available at the spa.
               </p>
             </div>
           </div>

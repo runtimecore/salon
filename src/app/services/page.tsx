@@ -3,11 +3,11 @@ import PageHero from "@/components/PageHero";
 import ServiceCard from "@/components/ServiceCard";
 import BookButton from "@/components/BookButton";
 import { serviceCategories } from "@/lib/services";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Services & Pricing",
-  description:
-    "Explore Aphrodite's full menu of hair, nail, facial, waxing, and makeup services with transparent pricing.",
+  description: `Explore ${site.name}'s full menu of injectables, laser, facial, and wellness treatments with transparent pricing.`,
 };
 
 export default function ServicesPage() {

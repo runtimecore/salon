@@ -15,7 +15,7 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Get in Touch"
-        title="Visit Aphrodite"
+        title={`Visit ${site.name}`}
         subtitle="We'd love to welcome you. Find us, call us, or book online anytime."
       />
 
@@ -23,7 +23,7 @@ export default function ContactPage() {
         <div className="grid gap-12 lg:grid-cols-2">
           {/* Details */}
           <div>
-            <h2 className="text-2xl text-ink">Salon details</h2>
+            <h2 className="text-2xl text-ink">Spa details</h2>
 
             <div className="mt-6 space-y-6">
               <div>

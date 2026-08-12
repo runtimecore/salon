@@ -10,7 +10,7 @@ type Props = {
   /**
    * Overrides the destination — pass a service's own Fresha link (see
    * `bookingUrlFor` in lib/services.ts) to open Fresha with that service
-   * pre-selected. Omit for the salon's general booking page.
+   * pre-selected. Omit for the spa's general booking page.
    */
   href?: string;
   /** Accessible label, e.g. "Book Gel Manicure" when the text just says "Book". */
@@ -32,7 +32,7 @@ const variants = {
 };
 
 /**
- * The single call-to-action used everywhere. Defaults to the salon's Fresha
+ * The single call-to-action used everywhere. Defaults to the spa's Fresha
  * booking page (set `bookingUrl` in lib/site.ts), or opens a specific service
  * when given an `href`. Until a link is set the button renders but does
  * nothing — no broken navigation or blank tab.

@@ -11,7 +11,7 @@ type Props = {
 /**
  * An external link that degrades gracefully: when `href` is empty it renders
  * the same-looking element but does nothing (no navigation, no blank tab).
- * Handy while the salon's Fresha links aren't configured yet.
+ * Handy while the spa's Fresha links aren't configured yet.
  */
 export default function ActionLink({
   href,

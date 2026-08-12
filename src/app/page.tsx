@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import BookButton from "@/components/BookButton";
 import ServiceCard from "@/components/ServiceCard";
@@ -8,19 +9,19 @@ import { site } from "@/lib/site";
 
 const values = [
   {
-    title: "Expert Stylists",
-    body: "A seasoned team that listens first, then delivers results you'll love to show off.",
+    title: "Expert Providers",
+    body: "A board-certified team that listens first, then delivers results you'll love to show off.",
   },
   {
-    title: "Premium Products",
-    body: "We use trusted, skin-kind, professional brands so your look lasts beyond the chair.",
+    title: "Medical-Grade Products",
+    body: "We use trusted, clinical-grade technology and products so your results last.",
   },
   {
     title: "Effortless Booking",
     body: "Reserve your spot online in under a minute, any time of day, and get instant confirmation.",
   },
   {
-    title: "A Warm Escape",
+    title: "A Calming Space",
     body: "A calm, welcoming space designed to make every visit feel like a moment for yourself.",
   },
 ];
@@ -28,17 +29,17 @@ const values = [
 const testimonials = [
   {
     quote:
-      "The best balayage I've ever had. The team truly listened and I walked out glowing.",
+      "The Botox results were so natural — exactly what I wanted. The team truly listened.",
     name: "Sophia R.",
   },
   {
     quote:
-      "Relaxing, professional, and always on time. Aphrodite has become my monthly ritual.",
+      "Relaxing, professional, and always on time. FENITI has become my monthly ritual.",
     name: "Maya L.",
   },
   {
     quote:
-      "From the moment you walk in, you feel cared for. My facials leave my skin incredible.",
+      "From the moment you walk in, you feel cared for. My HydraFacial left my skin glowing.",
     name: "Daniela P.",
   },
 ];
@@ -54,20 +55,20 @@ export default function Home() {
 
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
           <div>
-            <p className="hero-enter eyebrow text-gold-dark">{site.city} · Beauty Salon</p>
+            <p className="hero-enter eyebrow text-gold-dark">{site.city} · Medical Spa</p>
             <h1
               className="hero-enter mt-4 text-5xl leading-[1.05] text-ink sm:text-6xl"
               style={{ animationDelay: "120ms" }}
             >
-              Beauty, <span className="text-gold-dark">reimagined</span> for you.
+              Look refreshed. <span className="text-gold-dark">Feel renewed.</span>
             </h1>
             <p
               className="hero-enter mt-6 max-w-md text-lg leading-relaxed text-espresso/80"
               style={{ animationDelay: "220ms" }}
             >
-              At {site.name}, expert stylists and a warm, modern space come
-              together to bring out your most radiant self. Book your moment of
-              renewal today.
+              At {site.name}, board-certified providers and a warm, modern space
+              come together to help you look and feel your best. Book your
+              moment of renewal today.
             </p>
             <div
               className="hero-enter mt-8 flex flex-wrap items-center gap-4"
@@ -102,14 +103,17 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Hero visual — replace with a real photo (see notes) */}
+          {/* Hero visual */}
           <div className="hero-enter relative" style={{ animationDelay: "250ms" }}>
-            <div className="aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-gradient-to-br from-blush via-sand to-gold/40 shadow-xl shadow-gold/10">
-              <div className="flex h-full items-center justify-center p-8 text-center">
-                <span className="font-serif text-2xl text-espresso/50">
-                  Your salon photo here
-                </span>
-              </div>
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-gold/10">
+              <Image
+                src="/images/hero.png"
+                alt={`Treatment room at ${site.name}`}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
             </div>
             <div className="absolute -bottom-6 -left-6 hidden rounded-2xl border border-sand bg-cream/95 px-6 py-4 shadow-lg sm:block">
               <p className="font-serif text-lg text-ink">Walk in. Glow out.</p>
@@ -185,9 +189,9 @@ export default function Home() {
                   More glow, more often, for less.
                 </h2>
                 <p className="mt-4 max-w-md leading-relaxed text-cream/80">
-                  Join the {site.name} membership and enjoy monthly service
-                  credits, member-only pricing, and priority booking. Beauty as a
-                  habit, not a splurge.
+                  Join the {site.name} membership and enjoy monthly treatment
+                  credits, member-only pricing, and priority booking. Confidence
+                  as a habit, not a splurge.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4">
                   <Link
@@ -247,8 +251,8 @@ export default function Home() {
               <p className="eyebrow text-gold-dark">Gift Cards</p>
               <h2 className="mt-3 text-4xl text-ink">The perfect little luxury.</h2>
               <p className="mt-4 max-w-md text-muted">
-                Not sure what to give? An {site.name} gift card lets them choose
-                their own moment of self-care — redeemable on any service or
+                Not sure what to give? A {site.name} gift card lets them choose
+                their own moment of self-care — redeemable on any treatment or
                 product, and it never expires.
               </p>
               <div className="mt-7">
@@ -284,7 +288,7 @@ export default function Home() {
         <Reveal>
           <p className="eyebrow text-gold-dark">Ready when you are</p>
           <h2 className="mt-3 text-4xl text-ink sm:text-5xl">
-            Your next look is one click away.
+            Your next treatment is one click away.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted">
             Reserve your appointment online in under a minute. We can&apos;t wait

@@ -3,11 +3,11 @@ import PageHero from "@/components/PageHero";
 import BookButton from "@/components/BookButton";
 import Link from "next/link";
 import { memberships } from "@/lib/memberships";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Membership",
-  description:
-    "Join the Aphrodite membership for monthly service credits, member-only pricing, and priority booking.",
+  description: `Join the ${site.name} membership for monthly treatment credits, member-only pricing, and priority booking.`,
 };
 
 const faqs = [
@@ -30,7 +30,7 @@ export default function MembershipPage() {
     <>
       <PageHero
         eyebrow="Membership"
-        title="Beauty, as a beautiful habit."
+        title="Renewal, as a healthy habit."
         subtitle="Save on the services you love, enjoy priority booking, and make self-care part of your routine. Choose the plan that fits your glow."
       />
 

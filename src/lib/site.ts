@@ -5,10 +5,10 @@
  * booking link here and every "Book Now" button will use it.
  */
 export const site = {
-  name: "Aphrodite",
-  tagline: "Beauty Salon",
+  name: "FENITI",
+  tagline: "Medical Spa",
   description:
-    "Aphrodite is a modern beauty salon offering expert hair, nails, facials, waxing, and makeup. Book your appointment online and let our stylists bring out your best.",
+    "FENITI is a modern medical spa offering expert injectables, laser treatments, facials, and wellness therapies. Book your appointment online and let our licensed providers help you look and feel your best.",
 
   // TODO: paste your live Fresha booking link here (e.g.
   // "https://www.fresha.com/a/aphrodite-salon-..."). While it's empty,
@@ -28,7 +28,7 @@ export const site = {
   // Contact + location — TODO: replace with real details.
   phone: "(555) 123-4567",
   phoneHref: "tel:+15551234567",
-  email: "hello@aphroditesalon.com",
+  email: "hello@fenitimedspa.com",
   addressLine1: "123 Rosewood Avenue",
   addressLine2: "Suite 5",
   city: "Los Angeles",
@@ -36,7 +36,7 @@ export const site = {
   postalCode: "90012",
 
   // Used for SEO metadata (your final domain).
-  url: "https://www.aphroditesalon.com",
+  url: "https://www.fenitimedspa.com",
 
   // Social links — leave "" to hide the icon.
   social: {

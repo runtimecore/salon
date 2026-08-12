@@ -10,7 +10,7 @@ export default function Footer() {
           <p className="font-serif text-2xl text-white">{site.name}</p>
           <p className="eyebrow mt-1 text-gold">{site.tagline}</p>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/70">
-            Where beauty meets care. Book your moment of self-renewal with us.
+            Where science meets care. Book your moment of renewal with us.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function Footer() {
 
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-cream/60 sm:flex-row">
-          <p>© {new Date().getFullYear()} {site.name} Beauty Salon. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {site.name} {site.tagline}. All rights reserved.</p>
           <div className="flex gap-5">
             {site.social.instagram && (
               <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-white">Instagram</a>
