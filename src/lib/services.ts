@@ -12,6 +12,17 @@ export type Service = {
   price: string;
   popular?: boolean;
   /**
+   * Photo for the homepage "signature services" section, as a path into
+   * `public/images` (e.g. "/images/service-botox.png"). Shoot or crop these
+   * **portrait, 4:5** — they're masked into an arch, so keep the subject
+   * centred and leave headroom at the top. Omit it and the card still renders
+   * (a warm linen panel stands in), so a service without a photo never breaks
+   * the grid.
+   */
+  image?: string;
+  /** Alt text for `image`. Describe the treatment, not the mood. */
+  imageAlt?: string;
+  /**
    * Optional per-service Fresha link, so clicking "Book" on this service opens
    * Fresha with that service already selected.
    *
@@ -38,6 +49,8 @@ export function bookingUrlFor(service: Service): string {
 export type ServiceCategory = {
   slug: string;
   title: string;
+  /** One-word version of `title`, used as the eyebrow on homepage cards. */
+  short: string;
   blurb: string;
   services: Service[];
 };
@@ -46,6 +59,7 @@ export const serviceCategories: ServiceCategory[] = [
   {
     slug: "injectables",
     title: "Injectables",
+    short: "Injectables",
     blurb: "Botox and dermal filler for natural, refreshed results.",
     services: [
       {
@@ -54,6 +68,8 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "15 min",
         price: "from $12/unit",
         popular: true,
+        image: "/images/service-botox.png",
+        imageAlt: "A provider marking injection points on a client's forehead",
         bookingUrl: "",
       },
       {
@@ -62,6 +78,8 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "30 min",
         price: "from $650",
         popular: true,
+        image: "/images/service-lip-filler.png",
+        imageAlt: "A client's lips and jawline assessed before filler",
         bookingUrl: "",
       },
       {
@@ -76,6 +94,7 @@ export const serviceCategories: ServiceCategory[] = [
   {
     slug: "laser",
     title: "Laser & Skin Resurfacing",
+    short: "Laser",
     blurb: "Advanced laser treatments for smoother, clearer skin.",
     services: [
       {
@@ -98,6 +117,9 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "30 min",
         price: "from $250",
         popular: true,
+        image: "/images/service-photofacial.png",
+        imageAlt:
+          "A client in protective eyewear receiving an IPL photofacial",
         bookingUrl: "",
       },
       {
@@ -112,6 +134,7 @@ export const serviceCategories: ServiceCategory[] = [
   {
     slug: "facials",
     title: "Facials & Skin Treatments",
+    short: "Facials",
     blurb: "Customized treatments for a healthy, radiant glow.",
     services: [
       {
@@ -120,6 +143,8 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "45 min",
         price: "$175",
         popular: true,
+        image: "/images/service-hydrafacial.png",
+        imageAlt: "A HydraFacial wand passing over a client's cheek",
         bookingUrl: "",
       },
       {
@@ -148,6 +173,7 @@ export const serviceCategories: ServiceCategory[] = [
   {
     slug: "body",
     title: "Body Contouring",
+    short: "Body",
     blurb: "Non-invasive treatments to sculpt and tone.",
     services: [
       {
@@ -156,6 +182,8 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "60 min",
         price: "from $600",
         popular: true,
+        image: "/images/service-coolsculpting.png",
+        imageAlt: "A CoolSculpting applicator in place during treatment",
         bookingUrl: "",
       },
       {
@@ -170,6 +198,7 @@ export const serviceCategories: ServiceCategory[] = [
   {
     slug: "wellness",
     title: "Wellness & IV Therapy",
+    short: "Wellness",
     blurb: "Vitamin therapy to boost energy, immunity, and glow.",
     services: [
       {
@@ -178,6 +207,8 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "45 min",
         price: "from $150",
         popular: true,
+        image: "/images/service-iv-drip.png",
+        imageAlt: "A client resting in a lounge chair during an IV vitamin drip",
         bookingUrl: "",
       },
       {
@@ -198,7 +229,13 @@ export const serviceCategories: ServiceCategory[] = [
   },
 ];
 
+/** A featured service remembers which category it came from, so the homepage
+ *  card can label it ("Injectables", "Laser", …) instead of inventing a tag. */
+export type FeaturedService = Service & { category: string; categorySlug: string };
+
 // A short, curated list for the homepage preview.
-export const featuredServices: Service[] = serviceCategories
-  .flatMap((c) => c.services)
-  .filter((s) => s.popular);
+export const featuredServices: FeaturedService[] = serviceCategories.flatMap((c) =>
+  c.services
+    .filter((s) => s.popular)
+    .map((s) => ({ ...s, category: c.short, categorySlug: c.slug })),
+);

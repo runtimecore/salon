@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BookButton from "@/components/BookButton";
-import ServiceCard from "@/components/ServiceCard";
+import SignatureServiceCard from "@/components/SignatureServiceCard";
 import Reveal from "@/components/Reveal";
 import { featuredServices, serviceCategories } from "@/lib/services";
 import { memberships } from "@/lib/memberships";
@@ -144,6 +144,10 @@ export default function Home() {
               <div>
                 <p className="eyebrow text-gold-dark">What we do</p>
                 <h2 className="mt-2 text-4xl text-ink">Our signature services</h2>
+                <p className="mt-3 max-w-md text-muted">
+                  The treatments our clients book most, with the time and cost
+                  up front.
+                </p>
               </div>
               <Link
                 href="/services"
@@ -154,10 +158,10 @@ export default function Home() {
             </div>
           </Reveal>
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
             {featuredServices.map((service, i) => (
-              <Reveal key={service.name} delay={i * 90}>
-                <ServiceCard service={service} />
+              <Reveal key={service.name} delay={(i % 3) * 110} className="h-full">
+                <SignatureServiceCard service={service} />
               </Reveal>
             ))}
           </div>

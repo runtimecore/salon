@@ -46,6 +46,37 @@ h1, h2, h3, h4 {
   font-weight: 600;
 }
 
+/* ── Arched alcove ─────────────────────────────────────────
+   The signature service photos sit in an arch, echoing the plaster
+   doorways in the treatment rooms. On a 4:5 tile the top is a true
+   semicircle: the horizontal radius clamps at half the width, and 40%
+   of a 4:5 height is that same half-width. */
+.arch {
+  border-radius: 50% 50% 0.75rem 0.75rem / 40% 40% 0 0;
+}
+
+/* Photo drifts closer; the hairline arch behind it tucks in. Both react to
+   hover and to keyboard focus landing anywhere inside the card. */
+.alcove-photo {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .alcove-photo,
+.group:focus-within .alcove-photo {
+  transform: scale(1.05);
+}
+
+.alcove-outline {
+  transform: translate(11px, 11px);
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.6s ease;
+}
+.group:hover .alcove-outline,
+.group:focus-within .alcove-outline {
+  transform: translate(5px, 5px);
+  border-color: var(--color-gold);
+}
+
 /* ── Animations ────────────────────────────────────────── */
 @keyframes fadeInUp {
   from {
@@ -109,5 +140,19 @@ h1, h2, h3, h4 {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+  /* The alcove keeps its offset outline — that's layout, not motion — but
+     nothing slides or scales. */
+  .alcove-photo,
+  .alcove-outline {
+    transition: none !important;
+  }
+  .group:hover .alcove-photo,
+  .group:focus-within .alcove-photo {
+    transform: none;
+  }
+  .group:hover .alcove-outline,
+  .group:focus-within .alcove-outline {
+    transform: translate(11px, 11px);
   }
 }
