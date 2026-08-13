@@ -105,7 +105,14 @@ h1, h2, h3, h4 {
   animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* Gentle floating for decorative background glows. */
+/* Gentle floating for decorative background glows. Unlike `.reveal`, these two
+   earn a `will-change`: they animate for the life of the page, and pinning the
+   heavy blur onto its own layer means it's rasterized once and then only
+   moved, instead of being re-painted every frame. */
+.animate-float,
+.animate-float-slower {
+  will-change: transform;
+}
 .animate-float {
   animation: floatSlow 9s ease-in-out infinite;
 }
@@ -113,14 +120,18 @@ h1, h2, h3, h4 {
   animation: floatSlow 13s ease-in-out infinite;
 }
 
-/* Scroll-reveal: hidden until the Reveal component adds .is-visible. */
+/* Scroll-reveal: hidden until the Reveal component adds .is-visible.
+   Kept short and shallow (14px, not 28) so content settles into place as the
+   page moves rather than lurching in behind it. No `will-change` here — there
+   are ~20 of these on the homepage, and a permanent hint would leave every one
+   of them on its own compositor layer for the life of the page, which costs
+   far more during scroll than it saves during the half-second transition. */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(14px);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+    opacity 0.5s ease-out,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.is-visible {
   opacity: 1;
@@ -140,6 +151,8 @@ h1, h2, h3, h4 {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+    /* Nothing is animating, so don't hold a compositor layer for it. */
+    will-change: auto !important;
   }
   /* The alcove keeps its offset outline — that's layout, not motion — but
      nothing slides or scales. */

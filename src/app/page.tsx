@@ -6,23 +6,28 @@ import Reveal from "@/components/Reveal";
 import { featuredServices, serviceCategories } from "@/lib/services";
 import { memberships } from "@/lib/memberships";
 import { site } from "@/lib/site";
+import { LaurelCheck, SerumBottle, BookedDate, Archway } from "@/components/icons";
 
 const values = [
   {
     title: "Expert Providers",
     body: "A board-certified team that listens first, then delivers results you'll love to show off.",
+    Icon: LaurelCheck,
   },
   {
     title: "Medical-Grade Products",
     body: "We use trusted, clinical-grade technology and products so your results last.",
+    Icon: SerumBottle,
   },
   {
     title: "Effortless Booking",
     body: "Reserve your spot online in under a minute, any time of day, and get instant confirmation.",
+    Icon: BookedDate,
   },
   {
     title: "A Calming Space",
     body: "A calm, welcoming space designed to make every visit feel like a moment for yourself.",
+    Icon: Archway,
   },
 ];
 
@@ -128,7 +133,9 @@ export default function Home() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i * 90}>
-              <div className="mb-4 h-12 w-12 rounded-full bg-gold/15 ring-1 ring-gold/30" />
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold-dark ring-1 ring-gold/30">
+                <v.Icon className="h-[22px] w-[22px]" />
+              </div>
               <h3 className="text-lg text-ink">{v.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{v.body}</p>
             </Reveal>
@@ -160,7 +167,7 @@ export default function Home() {
 
           <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
             {featuredServices.map((service, i) => (
-              <Reveal key={service.name} delay={(i % 3) * 110} className="h-full">
+              <Reveal key={service.name} delay={(i % 3) * 70} className="h-full">
                 <SignatureServiceCard service={service} />
               </Reveal>
             ))}

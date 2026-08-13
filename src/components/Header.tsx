@@ -16,8 +16,12 @@ const navLinks = [
 export default function Header() {
   const [open, setOpen] = useState(false);
 
+  // The bar is opaque on purpose. A translucent + backdrop-blurred sticky
+  // header makes the compositor re-blur the strip of page behind it on every
+  // scroll frame, which is what made scrolling feel stiff. Cream on cream
+  // reads the same and costs nothing.
   return (
-    <header className="sticky top-0 z-50 border-b border-sand/70 bg-cream/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-sand/70 bg-cream">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex flex-col leading-none" onClick={() => setOpen(false)}>
           <span className="font-serif text-2xl tracking-wide text-ink">
