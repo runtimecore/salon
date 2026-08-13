@@ -42,14 +42,14 @@ export default function MembershipPage() {
       />
 
       {/* Plans */}
-      <section className={`${shell} py-16 lg:py-20`}>
+      <section className={`${shell} surface-bleed py-16 lg:py-20`}>
         <Reveal>
           <div className="grid border-y border-mist lg:grid-cols-3">
             {memberships.map((plan) => (
               <div
                 key={plan.name}
                 className={`flex flex-col border-b border-mist p-8 last:border-b-0 lg:border-b-0 lg:border-r lg:last:border-r-0 ${
-                  plan.featured ? "on-dark bg-petrol text-clinic" : ""
+                  plan.featured ? "on-dark bg-surface-deep text-clinic" : ""
                 }`}
               >
                 <div className="flex items-baseline justify-between gap-4">
@@ -125,7 +125,7 @@ export default function MembershipPage() {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-mist bg-paper py-16 lg:py-24">
+      <section className="border-t border-mist bg-surface-raised py-16 lg:py-24">
         <div className={shell}>
           <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
             <Reveal>

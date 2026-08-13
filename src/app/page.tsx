@@ -63,7 +63,7 @@ export default function Home() {
   return (
     <>
       {/* ══ Hero ══════════════════════════════════════════════════════ */}
-      <section className="border-b border-mist bg-paper">
+      <section className="border-b border-mist bg-surface-raised">
         <div
           className={`${shell} grid items-center gap-12 pb-16 pt-14 lg:grid-cols-[1.12fr_0.88fr] lg:gap-16 lg:pb-20 lg:pt-20`}
         >
@@ -175,7 +175,7 @@ export default function Home() {
       </section>
 
       {/* ══ Depth chart ═══════════════════════════════════════════════ */}
-      <section className={`${shell} py-20 lg:py-28`}>
+      <section className={`${shell} surface-bleed py-20 lg:py-28`}>
         <Reveal>
           <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-end lg:gap-16">
             <div>
@@ -207,7 +207,7 @@ export default function Home() {
       </section>
 
       {/* ══ Signature treatments ══════════════════════════════════════ */}
-      <section className="border-y border-mist bg-paper py-20 lg:py-28">
+      <section className="border-y border-mist bg-surface-raised py-20 lg:py-28">
         <div className={shell}>
           <Reveal>
             <div className="flex flex-col justify-between gap-6 border-b border-mist pb-8 sm:flex-row sm:items-end">
@@ -244,7 +244,7 @@ export default function Home() {
       </section>
 
       {/* ══ The visit ═════════════════════════════════════════════════ */}
-      <section className={`${shell} py-20 lg:py-28`}>
+      <section className={`${shell} surface-bleed py-20 lg:py-28`}>
         <Reveal>
           <p className="label flex items-center gap-3 text-jade">
             <span aria-hidden className="h-px w-8 bg-jade" />
@@ -275,7 +275,7 @@ export default function Home() {
       </section>
 
       {/* ══ Membership ════════════════════════════════════════════════ */}
-      <section className="on-dark bg-petrol py-20 text-clinic lg:py-28">
+      <section className="on-dark bg-surface-deep py-20 text-clinic lg:py-28">
         <div className={shell}>
           <Reveal>
             <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
@@ -334,7 +334,7 @@ export default function Home() {
       </section>
 
       {/* ══ Testimonials ══════════════════════════════════════════════ */}
-      <section className={`${shell} py-20 lg:py-28`}>
+      <section className={`${shell} surface-bleed py-20 lg:py-28`}>
         <Reveal>
           <p className="label flex items-center gap-3 text-jade">
             <span aria-hidden className="h-px w-8 bg-jade" />
@@ -365,7 +365,7 @@ export default function Home() {
       </section>
 
       {/* ══ Gift cards ════════════════════════════════════════════════ */}
-      <section className="border-y border-mist bg-paper py-20 lg:py-24">
+      <section className="border-y border-mist bg-surface-raised py-20 lg:py-24">
         <div className={shell}>
           <Reveal>
             <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
@@ -397,7 +397,7 @@ export default function Home() {
       </section>
 
       {/* ══ Close ═════════════════════════════════════════════════════ */}
-      <section className="on-dark bg-ink py-24 text-clinic lg:py-32">
+      <section className="on-dark bg-surface-ink py-24 text-clinic lg:py-32">
         <div className={shell}>
           <Reveal>
             <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-end lg:gap-16">

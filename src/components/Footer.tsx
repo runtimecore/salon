@@ -16,7 +16,7 @@ const stratumColors = [
 
 export default function Footer() {
   return (
-    <footer className="on-dark bg-petrol text-clinic">
+    <footer className="on-dark bg-surface-deep text-clinic">
       {/* The core sample, one last time — the site's spine closing the page */}
       <div aria-hidden className="flex h-1 w-full">
         {strata.map((stratum, i) => (

@@ -14,7 +14,7 @@ export default function ServiceCard({ service }: { service: Service }) {
   const stratum = service.layer ? stratumById(service.layer) : null;
 
   return (
-    <div className="group relative border-b border-mist transition-colors hover:bg-paper">
+    <div className="group relative border-b border-mist transition-colors hover:bg-surface-raised">
       {service.layer && (
         <span
           aria-hidden

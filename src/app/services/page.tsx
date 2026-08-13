@@ -40,7 +40,7 @@ export default function ServicesPage() {
       </PageHero>
 
       {/* Depth legend, repeated here because the menu rows are colour-coded */}
-      <div className="border-b border-mist bg-clinic">
+      <div className="border-b border-mist bg-surface">
         <div className={`${shell} flex flex-wrap items-center gap-x-6 gap-y-3 py-5`}>
           <span className="label-sm text-muted">Depth key</span>
           {strata.map((stratum) => (
@@ -59,7 +59,7 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      <div className={`${shell} pb-8 pt-16 lg:pt-20`}>
+      <div className={`${shell} surface-bleed pb-8 pt-16 lg:pt-20`}>
         {serviceCategories.map((category) => (
           <section
             key={category.slug}
@@ -92,7 +92,7 @@ export default function ServicesPage() {
       </div>
 
       {/* Close */}
-      <section className="on-dark bg-ink py-20 text-clinic lg:py-24">
+      <section className="on-dark bg-surface-ink py-20 text-clinic lg:py-24">
         <div className={shell}>
           <Reveal>
             <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end lg:gap-16">

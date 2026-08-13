@@ -43,7 +43,7 @@ export default function GiftCardsPage() {
       />
 
       {/* Card + amounts */}
-      <section className={`${shell} py-16 lg:py-20`}>
+      <section className={`${shell} surface-bleed py-16 lg:py-20`}>
         <div className="grid items-center gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
           <Reveal>
             <GiftCardFace />
@@ -97,7 +97,7 @@ export default function GiftCardsPage() {
       </section>
 
       {/* How it works — a real sequence, so it gets numbers */}
-      <section className="border-t border-mist bg-paper py-16 lg:py-24">
+      <section className="border-t border-mist bg-surface-raised py-16 lg:py-24">
         <div className={shell}>
           <Reveal>
             <p className="label flex items-center gap-3 text-jade">

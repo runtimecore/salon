@@ -72,7 +72,7 @@ export default function AboutPage() {
       />
 
       {/* Story */}
-      <section className={`${shell} py-16 lg:py-24`}>
+      <section className={`${shell} surface-bleed py-16 lg:py-24`}>
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
           <Reveal>
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2px] bg-sage">
@@ -117,7 +117,7 @@ export default function AboutPage() {
       </section>
 
       {/* Standards */}
-      <section className="border-y border-mist bg-paper py-16 lg:py-24">
+      <section className="border-y border-mist bg-surface-raised py-16 lg:py-24">
         <div className={shell}>
           <Reveal>
             <p className="label flex items-center gap-3 text-jade">
@@ -150,7 +150,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className={`${shell} py-16 lg:py-24`}>
+      <section className={`${shell} surface-bleed py-16 lg:py-24`}>
         <Reveal>
           <div className="flex flex-col justify-between gap-4 border-b border-mist pb-6 sm:flex-row sm:items-end">
             <div>

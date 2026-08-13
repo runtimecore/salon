@@ -17,7 +17,7 @@ export default function PageHero({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="border-b border-mist bg-paper">
+    <section className="border-b border-mist bg-surface-raised">
       <div className="mx-auto max-w-[84rem] px-6 pb-12 pt-14 lg:px-12 lg:pb-16 lg:pt-20">
         <div className="grid gap-8 lg:grid-cols-[1.35fr_1fr] lg:items-end lg:gap-16">
           <div>

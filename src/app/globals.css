@@ -18,6 +18,16 @@
   --color-sage: #dde5df; /* alternate band */
   --color-mist: #d2ddd6; /* hairlines, rules, dividers */
 
+  /* Translucent surfaces — the shader background (see SiteBackground.tsx)
+     reads through these. Use them for **full-width section grounds only**.
+     Buttons, chips, tags, and photo frames stay on the solid tokens above:
+     a translucent control over a moving background reads as a rendering bug,
+     and the alphas would compound wherever two surfaces overlap. */
+  --color-surface: rgb(233 238 234 / 0.78); /* clinic */
+  --color-surface-raised: rgb(244 247 244 / 0.72); /* paper */
+  --color-surface-deep: rgb(18 58 49 / 0.86); /* petrol */
+  --color-surface-ink: rgb(12 22 19 / 0.88); /* ink */
+
   /* Ink — all three clear 4.5:1 on clinic */
   --color-ink: #0c1613;
   --color-slate: #3d4f49;
@@ -59,6 +69,10 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* `.surface-bleed` spans 100vw, which counts the scrollbar and so overhangs
+     the viewport by a few pixels. `clip` trims that without creating a scroll
+     container — `hidden` would, and that breaks the sticky header. */
+  overflow-x: clip;
 }
 
 /* ── Display type ──────────────────────────────────────────────────────
@@ -159,6 +173,69 @@ h3 {
 }
 .reveal.is-visible .strat {
   transform: scaleX(1);
+}
+
+/* ── Shader ground ─────────────────────────────────────────────────────
+   The static stand-in for the animated background. It's server-rendered, so
+   it's on screen in the very first paint — long before the JS bundle has
+   downloaded and the WebGL canvas can exist.
+
+   `#57bdcc` is not a guess: it's the measured mean of the shader's own output,
+   which holds within ~2/255 across frames. Because the ground already sits at
+   the shader's level, the canvas fading in on top doesn't change the page's
+   colour — only the cell pattern resolves. Without this the page painted flat
+   cream and then jumped to cyan when hydration finished.
+
+   It's also the entire background for reduced-motion users and browsers with
+   no WebGL, which is why it carries some structure of its own instead of being
+   a flat fill. Re-measure it if the shader's `UNIFORMS.colors` ever change. */
+.shader-ground {
+  background-color: #57bdcc;
+  background-image:
+    radial-gradient(
+      70% 55% at 18% 22%,
+      rgba(103, 232, 249, 0.55),
+      transparent 72%
+    ),
+    radial-gradient(
+      60% 50% at 82% 12%,
+      rgba(236, 254, 255, 0.32),
+      transparent 68%
+    ),
+    radial-gradient(
+      75% 65% at 72% 88%,
+      rgba(14, 116, 144, 0.45),
+      transparent 74%
+    );
+}
+
+/* The canvas resolves over the ground instead of snapping in. Long and
+   unhurried on purpose — it's reading as a change of texture, not of colour. */
+.shader-in {
+  animation: fadeIn 900ms ease-out both;
+}
+
+/* ── Full-bleed surface ────────────────────────────────────────────────
+   For sections that are width-constrained for layout but whose ground must
+   still reach both edges of the viewport. Without this, the fixed shader
+   background (SiteBackground.tsx) runs raw and unmuted down the gutters
+   beside the content column.
+
+   Sections that are already full-width use plain `bg-surface` instead — they
+   don't need the pseudo-element. */
+.surface-bleed {
+  position: relative;
+}
+.surface-bleed::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: var(--color-surface);
+  /* Above the shader (which sits at -10), below this section's own content. */
+  z-index: -1;
 }
 
 /* ── Focus ─────────────────────────────────────────────────────────────

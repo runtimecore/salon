@@ -3,6 +3,7 @@ import { Archivo, Instrument_Sans, Martian_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SiteBackground from "@/components/SiteBackground";
 import { site } from "@/lib/site";
 
 /**
@@ -66,7 +67,10 @@ export default function RootLayout({
       lang="en"
       className={`${archivo.variable} ${instrumentSans.variable} ${martianMono.variable} h-full antialiased`}
     >
+      {/* bg-clinic is the ground the shader draws over, and the flat fallback
+          whenever SiteBackground bows out (reduced motion, no WebGL). */}
       <body className="min-h-full flex flex-col bg-clinic text-ink">
+        <SiteBackground />
         <a
           href="#main"
           className="label sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-ink focus:px-4 focus:py-3 focus:text-clinic"

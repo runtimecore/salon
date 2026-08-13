@@ -22,7 +22,7 @@ export default function ContactPage() {
         subtitle="Call, email, or book online — whichever is quickest. If you're not sure what you need yet, book the consultation and ask us there."
       />
 
-      <section className={`${shell} py-16 lg:py-20`}>
+      <section className={`${shell} surface-bleed py-16 lg:py-20`}>
         <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
           {/* Details */}
           <Reveal>

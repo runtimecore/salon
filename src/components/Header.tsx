@@ -16,12 +16,13 @@ const navLinks = [
 export default function Header() {
   const [open, setOpen] = useState(false);
 
-  // The bar is opaque on purpose. A translucent + backdrop-blurred sticky
-  // header makes the compositor re-blur the strip of page behind it on every
-  // scroll frame, which is what made scrolling feel stiff. Clinic on clinic
-  // reads the same and costs nothing.
+  // This is the one backdrop-blur on the site, and it's load-bearing: the bar
+  // is translucent so the shader background reads through it, which also means
+  // content scrolls underneath it. The blur is what stops that content from
+  // being legible through the bar. Everywhere else, translucency is plain alpha
+  // over the single scrim in SiteBackground — far cheaper per frame.
   return (
-    <header className="sticky top-0 z-50 border-b border-mist bg-clinic">
+    <header className="sticky top-0 z-50 border-b border-mist bg-surface backdrop-blur-md">
       <nav className="mx-auto flex max-w-[84rem] items-center justify-between gap-6 px-6 py-5 lg:px-12">
         {/* Masthead: wordmark, hairline, then the two facts that place it */}
         <Link
@@ -83,7 +84,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-mist bg-clinic px-6 py-6 lg:hidden">
+        <div className="border-t border-mist bg-surface px-6 py-6 backdrop-blur-md lg:hidden">
           <div className="flex flex-col">
             {navLinks.map((link) => (
               <Link
