@@ -4,7 +4,8 @@ import { site } from "@/lib/site";
 
 type Props = {
   children?: React.ReactNode;
-  variant?: "solid" | "outline" | "light";
+  /** `light` and `ghost` are the two dark-ground variants — filled and outline. */
+  variant?: "solid" | "outline" | "light" | "ghost";
   size?: "md" | "sm";
   className?: string;
   /**
@@ -13,29 +14,32 @@ type Props = {
    * pre-selected. Omit for the spa's general booking page.
    */
   href?: string;
-  /** Accessible label, e.g. "Book Gel Manicure" when the text just says "Book". */
+  /** Accessible label, e.g. "Book HydraFacial" when the text just says "Book". */
   ariaLabel?: string;
 };
 
+/* Square corners, mono label. A booking button here should look like the
+   control on a piece of equipment, not a pill on a landing page. */
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold tracking-wide transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-cream";
+  "label inline-flex items-center justify-center rounded-[2px] transition-colors duration-200";
 
 const sizes = {
-  md: "px-7 py-3 text-sm",
-  sm: "px-5 py-2 text-xs",
+  md: "px-7 py-4 text-[0.6875rem]",
+  sm: "px-4 py-2.5 text-[0.5625rem]",
 };
 
 const variants = {
-  solid: "bg-gold text-white hover:bg-gold-dark",
-  outline: "border border-gold text-espresso hover:bg-gold hover:text-white",
-  light: "bg-white/90 text-espresso hover:bg-white",
+  solid: "bg-ink text-clinic hover:bg-jade",
+  outline: "border border-ink/25 text-ink hover:border-jade hover:text-jade",
+  light: "bg-clinic text-ink hover:bg-mint",
+  ghost: "border border-clinic/35 text-clinic hover:border-mint hover:text-mint",
 };
 
 /**
  * The single call-to-action used everywhere. Defaults to the spa's Fresha
  * booking page (set `bookingUrl` in lib/site.ts), or opens a specific service
- * when given an `href`. Until a link is set the button renders but does
- * nothing — no broken navigation or blank tab.
+ * when given an `href`. Until a link is set the button renders identically but
+ * does nothing — the page never shows a broken CTA while Fresha is pending.
  */
 export default function BookButton({
   children = "Book Now",
@@ -56,7 +60,7 @@ export default function BookButton({
         aria-label={ariaLabel}
         title="Online booking coming soon"
         onClick={(e) => e.preventDefault()}
-        className={classes}
+        className={`${classes} cursor-default`}
       >
         {children}
       </a>

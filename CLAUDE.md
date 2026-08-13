@@ -6,16 +6,22 @@ A marketing + booking site for **FENITI**, a real medical spa (intended to go li
 
 ## Stack
 - Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS v4 (CSS-based theming in `src/app/globals.css`).
-- Fonts via `next/font`: Playfair Display (headings) + Inter (body).
+- Fonts via `next/font`: Archivo (display, `wdth` axis requested explicitly) + Instrument Sans (body) + Martian Mono (data).
 - Booking is handled by **Fresha** (external) — no custom scheduling engine.
 
 ## Design system
-Warm + modern, clinical-luxury. Palette tokens live in `@theme` in `src/app/globals.css`:
-cream / sand / linen (backgrounds), ink / espresso (text), gold + gold-dark (primary), blush / rose (accents). Use these Tailwind color names (`bg-cream`, `text-gold-dark`, …).
+**Depth is the organising idea.** Every treatment on the menu works at a specific layer of tissue, and the site says which — that's the thesis the palette, type, and layout all serve. Tokens live in `@theme` in `src/app/globals.css`.
+
+- **Colour** — cool and mineral: `clinic` (page ground) / `paper` / `sage` / `mist` (hairlines); `ink` / `slate` / `muted` for text; `petrol` (deep panels), `jade` + `jade-deep` (actions, links, rules), `mint` (jade's stand-in on dark grounds). All three text tones clear 4.5:1 on `clinic`.
+- **`strat-1` … `strat-6` are the anatomy ramp** and are **diagram-only** — tissue colour, shading deeper as you go down. Warm colour appears nowhere else on the site. Reaching for a strat colour outside a depth diagram means reaching for `jade` instead.
+- **Type — width carries hierarchy, not weight.** `.display` (Archivo at `wdth 110`) for headings, Instrument Sans for body, and `.label` / `.label-sm` / `.num` (Martian Mono) for *anything measured*: depths, doses, durations, prices, wavelengths, and the mono kickers that introduce sections. No serif anywhere.
+- **Shape** — square corners (`rounded-[2px]`), hairline rules, no shadows, no blurred glows. Sections open with a mono kicker preceded by a short jade rule.
+- Page shell is `mx-auto w-full max-w-[84rem] px-6 lg:px-12`.
 
 ## Where content lives (edit these, not the components)
 - `src/lib/site.ts` — name, **Fresha `bookingUrl` / `giftCardUrl`**, contact, address, hours, socials, `url` (domain for SEO), gift-card amounts.
-- `src/lib/services.ts` — treatment categories (injectables, laser, facials, body, wellness), names, durations, prices (`popular` flag drives homepage feature + badge), and each service's own **Fresha `bookingUrl`** (from Fresha's Link builder) so its "Book" button opens Fresha with that service pre-selected; blank falls back to `site.bookingUrl` via `bookingUrlFor()`.
+- `src/lib/services.ts` — the **`strata`** list (the six tissue layers, their depths, and the sentence explaining each) plus treatment categories (injectables, laser, facials, body, wellness), names, durations, prices (`popular` flag drives homepage feature), each service's `layer` + `spec` (the one measurement shown on its cards), and each service's own **Fresha `bookingUrl`** (from Fresha's Link builder) so its "Book" button opens Fresha with that service pre-selected; blank falls back to `site.bookingUrl` via `bookingUrlFor()`. `treatmentsByStratum()` re-cuts the menu by depth for the chart.
+  - ⚠ **The depths and specs need the medical director's sign-off before launch** — they're typical published ranges on a live medical page, not invented, but they are claims.
 - `src/lib/memberships.ts` — membership tiers/perks.
 - Team names/roles: `src/app/about/page.tsx` (`team`, with `photo` paths into `public/images/`). Testimonials: `src/app/page.tsx`.
 
@@ -23,15 +29,20 @@ cream / sand / linen (backgrounds), ink / espresso (text), gold + gold-dark (pri
 Home (`/`), Services, Membership, Gift Cards, About, Contact. Plus `sitemap.ts` + `robots.ts`. No `/book` page — CTAs funnel to Fresha.
 
 ## Key components
-- `BookButton.tsx` — the primary CTA; links to `site.bookingUrl`. **Degrades gracefully when the URL is empty** (renders but inert, "coming soon" tooltip). Client component.
+- `DepthChart.tsx` — **the signature.** The menu re-cut as a core sample: a band per stratum, tissue colour on the left rail washing out under the text, depth in the gutter, treatments as chips.
+- `AnnotatedPhoto.tsx` — the other signature: clinical photography annotated like a technical plate (dot → hairline leader → mono chip). Plate `x`/`y` are percentages **to the dot**; place them in empty parts of the frame, and everything a plate says must be a real property of the treatment shown.
+- `StratumTag.tsx` — owns `stratumColor` (id → ramp colour, keyed by id so dropping a layer doesn't reshuffle) and the depth tag that sits on treatment photos.
+- `BookButton.tsx` — the primary CTA; links to `site.bookingUrl`. **Degrades gracefully when the URL is empty** (renders identically but inert, "coming soon" tooltip). Client component. `light` and `ghost` are the filled/outline pair for dark grounds.
 - `ActionLink.tsx` — same graceful-empty behavior for arbitrary external links (used by gift-card buttons).
-- `Reveal.tsx` — IntersectionObserver scroll-reveal wrapper (fade + slide up). Falls back to visible if unsupported.
-- Homepage animations: `.hero-enter` (staggered load-in), `.animate-float` (drifting glows), `.reveal` — all defined in `globals.css` with a `prefers-reduced-motion` fallback.
+- `ServiceCard.tsx` is a ledger **row** for the /services menu; `SignatureServiceCard.tsx` is the photo card for the homepage. Deliberately different components.
+- `Reveal.tsx` — IntersectionObserver scroll-reveal wrapper. Falls back to visible if unsupported.
+- Animations in `globals.css`: `.enter` / `.enter-photo` / `.enter-tick` / `.enter-fade` (hero load sequence, stagger with inline `animation-delay`), `.leader` + `.strat` (diagrams drawing themselves), `.reveal` (scroll). All have a `prefers-reduced-motion` fallback — note that diagrams stay *drawn* under reduced motion, since they're information rather than decoration.
 
 ## Photos
 Real photos are in place under `public/images/`: `hero.png` (homepage), `about-interior.png` (About page story shot), and four team headshots (`team-founder.png`, `team-nurse-injector.png`, `team-esthetician.png`, `team-care-coordinator.png`) wired up in `src/app/about/page.tsx`. All AI-generated placeholders — swap for real photography before launch.
 
 ## Current state (as of last session)
+- **Redesigned end to end (2026-08-12).** The previous look — cream/gold, Playfair Display, arched photo alcoves, floating blurred glows, pill buttons — is gone. Replaced by the depth system described above. No page kept its old layout, and the copy was rewritten with it.
 - Rebranded from an earlier "Aphrodite / Beauty Salon" placeholder concept to **FENITI, a medical spa**. Content is still **test/placeholder** (services, prices, memberships, team names, testimonials) that the owner is fine with for demo.
 - `bookingUrl` and `giftCardUrl` are intentionally **empty** — the owner created a Fresha *business* account but hasn't enabled online booking (it required entering billing details). Buttons stay inert until real links are pasted in. There is no Fresha developer sandbox; the free business account is the only source of a booking link.
 

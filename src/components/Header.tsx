@@ -18,30 +18,44 @@ export default function Header() {
 
   // The bar is opaque on purpose. A translucent + backdrop-blurred sticky
   // header makes the compositor re-blur the strip of page behind it on every
-  // scroll frame, which is what made scrolling feel stiff. Cream on cream
+  // scroll frame, which is what made scrolling feel stiff. Clinic on clinic
   // reads the same and costs nothing.
   return (
-    <header className="sticky top-0 z-50 border-b border-sand/70 bg-cream">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex flex-col leading-none" onClick={() => setOpen(false)}>
-          <span className="font-serif text-2xl tracking-wide text-ink">
+    <header className="sticky top-0 z-50 border-b border-mist bg-clinic">
+      <nav className="mx-auto flex max-w-[84rem] items-center justify-between gap-6 px-6 py-5 lg:px-12">
+        {/* Masthead: wordmark, hairline, then the two facts that place it */}
+        <Link
+          href="/"
+          className="flex items-center gap-4"
+          onClick={() => setOpen(false)}
+        >
+          <span
+            className="display -mr-[0.34em] text-[1.35rem] uppercase leading-none text-ink"
+            style={{ fontVariationSettings: '"wdth" 120', letterSpacing: "0.34em" }}
+          >
             {site.name}
           </span>
-          <span className="eyebrow text-gold-dark">{site.tagline}</span>
+          <span className="hidden h-7 w-px bg-mist sm:block" />
+          <span className="hidden sm:block">
+            <span className="label-sm block text-jade">{site.tagline}</span>
+            <span className="label-sm block text-muted">{site.city}</span>
+          </span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-9 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-espresso transition-colors hover:text-gold-dark"
+              className="label relative text-slate transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-jade after:transition-transform after:duration-300 hover:text-ink hover:after:scale-x-100"
             >
               {link.label}
             </Link>
           ))}
-          <BookButton className="px-6 py-2.5">Book Now</BookButton>
+          <BookButton size="sm" className="ml-1">
+            Book
+          </BookButton>
         </div>
 
         {/* Mobile toggle */}
@@ -50,32 +64,38 @@ export default function Header() {
           aria-label="Toggle menu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 items-center justify-center rounded-full text-espresso md:hidden"
+          className="flex h-10 w-10 items-center justify-center text-ink lg:hidden"
         >
           <span className="sr-only">Menu</span>
-          <div className="space-y-1.5">
-            <span className={`block h-0.5 w-6 bg-espresso transition ${open ? "translate-y-2 rotate-45" : ""}`} />
-            <span className={`block h-0.5 w-6 bg-espresso transition ${open ? "opacity-0" : ""}`} />
-            <span className={`block h-0.5 w-6 bg-espresso transition ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+          <div className="space-y-[5px]">
+            <span
+              className={`block h-px w-6 bg-ink transition-transform duration-300 ${open ? "translate-y-[6px] rotate-45" : ""}`}
+            />
+            <span
+              className={`block h-px w-6 bg-ink transition-opacity duration-300 ${open ? "opacity-0" : ""}`}
+            />
+            <span
+              className={`block h-px w-6 bg-ink transition-transform duration-300 ${open ? "-translate-y-[6px] -rotate-45" : ""}`}
+            />
           </div>
         </button>
       </nav>
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-sand/70 bg-cream px-6 py-4 md:hidden">
-          <div className="flex flex-col gap-4">
+        <div className="border-t border-mist bg-clinic px-6 py-6 lg:hidden">
+          <div className="flex flex-col">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="text-base font-medium text-espresso"
+                className="label border-b border-mist py-4 text-slate"
               >
                 {link.label}
               </Link>
             ))}
-            <BookButton className="mt-2 w-full">Book Now</BookButton>
+            <BookButton className="mt-6 w-full">Book an appointment</BookButton>
           </div>
         </div>
       )}

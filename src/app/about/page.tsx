@@ -2,87 +2,190 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import PageHero from "@/components/PageHero";
 import BookButton from "@/components/BookButton";
+import Reveal from "@/components/Reveal";
+import { Caliper, Waveform, Vial, Credential } from "@/components/icons";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `Meet the team behind ${site.name} — a modern medical spa built on care, craft, and a warm welcome.`,
+  description: `Meet the licensed team behind ${site.name} — a medical spa built on written plans, unit pricing, and telling you exactly what was done.`,
 };
 
-// TODO: replace with real providers and photos.
+const shell = "mx-auto w-full max-w-[84rem] px-6 lg:px-12";
+
+// TODO: replace with real providers, photos, and license numbers before launch.
 const team = [
-  { name: "Elena Marchetti", role: "Founder & Medical Director", photo: "/images/team-founder.png" },
-  { name: "Priya Nair", role: "Nurse Injector, RN", photo: "/images/team-nurse-injector.png" },
-  { name: "Jordan Kim", role: "Licensed Esthetician", photo: "/images/team-esthetician.png" },
-  { name: "Camila Torres", role: "Patient Care Coordinator", photo: "/images/team-care-coordinator.png" },
+  {
+    name: "Elena Marchetti",
+    role: "Founder & Medical Director",
+    photo: "/images/team-founder.png",
+  },
+  {
+    name: "Priya Nair",
+    role: "Nurse Injector, RN",
+    photo: "/images/team-nurse-injector.png",
+  },
+  {
+    name: "Jordan Kim",
+    role: "Licensed Esthetician",
+    photo: "/images/team-esthetician.png",
+  },
+  {
+    name: "Camila Torres",
+    role: "Patient Care Coordinator",
+    photo: "/images/team-care-coordinator.png",
+  },
+];
+
+// TODO: the medical director should confirm each of these claims — they are
+// promises to patients, and they appear on a live page.
+const standards = [
+  {
+    title: "Mapped before we begin",
+    body: "Every plan starts with a provider marking what is treatable and what is not. You leave the consultation with that written down, whether or not you book.",
+    Icon: Caliper,
+  },
+  {
+    title: "Medical-grade devices",
+    body: "Our laser, RF, and IPL platforms are FDA-cleared for the treatments we offer and serviced on schedule. The settings used on you are recorded in your chart.",
+    Icon: Waveform,
+  },
+  {
+    title: "Priced by the unit",
+    body: "Neurotoxin is charged per unit and filler per syringe. You pay for what actually went in, not for a package that assumed a number in advance.",
+    Icon: Vial,
+  },
+  {
+    title: "Licensed providers only",
+    body: "Injections are performed by licensed medical professionals working under our medical director. Nobody treats you who is not credentialed to.",
+    Icon: Credential,
+  },
 ];
 
 export default function AboutPage() {
   return (
     <>
       <PageHero
-        eyebrow="Our Story"
-        title="Care is our craft"
-        subtitle={`${site.name} was founded on a simple belief: everyone deserves to feel confident and cared for. Here's who we are.`}
+        eyebrow="About"
+        title="A clinic that shows its work"
+        subtitle={`Too many people leave a medical spa unable to name what was done to them. ${site.name} was built to be the opposite: a depth, a dose, and a price you can repeat back.`}
       />
 
       {/* Story */}
-      <section className="mx-auto max-w-5xl px-6 py-16">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
-            <Image
-              src="/images/about-interior.png"
-              alt={`${site.name} treatment room`}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
-          <div>
-            <h2 className="text-3xl text-ink">A warm, modern escape</h2>
-            <p className="mt-4 leading-relaxed text-espresso/80">
-              From the moment you step through our doors, {site.name} is designed
-              to feel like a retreat from the everyday. Our providers blend
-              clinical expertise with genuine attention, so every visit leaves you
-              looking — and feeling — your best.
-            </p>
-            <p className="mt-4 leading-relaxed text-espresso/80">
-              We invest in ongoing training and medical-grade technology,
-              because your skin, health, and time deserve nothing less. Whether
-              it&apos;s a quick refresh or a full transformation, we&apos;re here
-              for it.
-            </p>
-            <div className="mt-8">
-              <BookButton>Book Your Visit</BookButton>
+      <section className={`${shell} py-16 lg:py-24`}>
+        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+          <Reveal>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[2px] bg-sage">
+              <Image
+                src="/images/about-interior.png"
+                alt={`A private treatment room at ${site.name}`}
+                fill
+                sizes="(max-width: 1024px) 92vw, 52vw"
+                className="object-cover"
+              />
             </div>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <div>
+              <p className="label flex items-center gap-3 text-jade">
+                <span aria-hidden className="h-px w-8 bg-jade" />
+                Why we opened
+              </p>
+              <h2 className="mt-6 text-[clamp(1.75rem,3.4vw,2.75rem)]">
+                Built around the consultation
+              </h2>
+              <p className="mt-6 leading-relaxed text-slate">
+                Our founder spent a decade in dermatology watching patients
+                arrive with a treatment name and no idea what it did. The fix
+                was not a softer room. It was a longer first appointment, a
+                written plan, and the discipline to say when a treatment is not
+                worth your money.
+              </p>
+              <p className="mt-4 leading-relaxed text-slate">
+                So that is what {site.name} is. One private room per client,
+                providers who are credentialed for what they perform, and a
+                menu organised by what each treatment physically does rather
+                than by how it markets.
+              </p>
+              <div className="mt-9">
+                <BookButton>Book a consultation</BookButton>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Standards */}
+      <section className="border-y border-mist bg-paper py-16 lg:py-24">
+        <div className={shell}>
+          <Reveal>
+            <p className="label flex items-center gap-3 text-jade">
+              <span aria-hidden className="h-px w-8 bg-jade" />
+              What you can hold us to
+            </p>
+            <h2 className="mt-6 max-w-2xl text-[clamp(1.75rem,3.4vw,2.75rem)]">
+              Four standards, no exceptions
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-x-8 gap-y-10 border-t border-mist sm:grid-cols-2 lg:grid-cols-4">
+            {standards.map((standard, i) => (
+              <Reveal key={standard.title} delay={i * 80}>
+                <div className="relative pt-7">
+                  <span
+                    aria-hidden
+                    className="absolute left-0 top-0 h-[3px] w-[3px] bg-jade"
+                  />
+                  <standard.Icon className="h-7 w-7 text-jade" />
+                  <h3 className="mt-4 text-lg">{standard.title}</h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-slate">
+                    {standard.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Team */}
-      <section className="bg-linen/60 py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="text-center">
-            <p className="eyebrow text-gold-dark">The Team</p>
-            <h2 className="mt-2 text-3xl text-ink">Meet your stylists</h2>
+      <section className={`${shell} py-16 lg:py-24`}>
+        <Reveal>
+          <div className="flex flex-col justify-between gap-4 border-b border-mist pb-6 sm:flex-row sm:items-end">
+            <div>
+              <p className="label flex items-center gap-3 text-jade">
+                <span aria-hidden className="h-px w-8 bg-jade" />
+                The team
+              </p>
+              <h2 className="mt-6 text-[clamp(1.75rem,3.4vw,2.75rem)]">
+                Who will be treating you
+              </h2>
+            </div>
+            <p className="num text-[0.6875rem] text-muted">
+              {team.length} providers · {site.city}
+            </p>
           </div>
-          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((member) => (
-              <div key={member.name} className="text-center">
-                <div className="relative mx-auto aspect-square w-full max-w-[220px] overflow-hidden rounded-2xl">
+        </Reveal>
+
+        <div className="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          {team.map((member, i) => (
+            <Reveal key={member.name} delay={(i % 4) * 70}>
+              <div>
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-sage">
                   <Image
                     src={member.photo}
                     alt={member.name}
                     fill
-                    sizes="220px"
+                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 22vw"
                     className="object-cover"
                   />
                 </div>
-                <h3 className="mt-4 text-lg text-ink">{member.name}</h3>
-                <p className="text-sm text-gold-dark">{member.role}</p>
+                <h3 className="mt-5 text-lg">{member.name}</h3>
+                <p className="label-sm mt-2 text-jade">{member.role}</p>
               </div>
-            ))}
-          </div>
+            </Reveal>
+          ))}
         </div>
       </section>
     </>

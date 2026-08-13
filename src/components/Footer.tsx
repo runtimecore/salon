@@ -1,96 +1,158 @@
 import Link from "next/link";
 import { site, fullAddress } from "@/lib/site";
+import { strata } from "@/lib/services";
+
+const linkStyle =
+  "text-clinic/75 underline decoration-clinic/20 decoration-1 underline-offset-4 transition-colors hover:text-clinic hover:decoration-mint";
+
+const stratumColors = [
+  "var(--color-strat-1)",
+  "var(--color-strat-2)",
+  "var(--color-strat-3)",
+  "var(--color-strat-4)",
+  "var(--color-strat-5)",
+  "var(--color-strat-6)",
+];
 
 export default function Footer() {
   return (
-    <footer className="mt-24 bg-espresso text-cream/90">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Brand */}
-        <div className="sm:col-span-2 lg:col-span-1">
-          <p className="font-serif text-2xl text-white">{site.name}</p>
-          <p className="eyebrow mt-1 text-gold">{site.tagline}</p>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/70">
-            Where science meets care. Book your moment of renewal with us.
+    <footer className="on-dark bg-petrol text-clinic">
+      {/* The core sample, one last time — the site's spine closing the page */}
+      <div aria-hidden className="flex h-1 w-full">
+        {strata.map((stratum, i) => (
+          <span
+            key={stratum.id}
+            className="flex-1"
+            style={{ background: stratumColors[i % stratumColors.length] }}
+          />
+        ))}
+      </div>
+
+      <div className="mx-auto max-w-[84rem] px-6 py-16 lg:px-12">
+        <div className="flex flex-col gap-3 border-b border-clinic/15 pb-10 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p
+              className="display -mr-[0.3em] text-3xl uppercase leading-none sm:text-4xl"
+              style={{ fontVariationSettings: '"wdth" 120', letterSpacing: "0.3em" }}
+            >
+              {site.name}
+            </p>
+            <p className="label mt-4 text-mint">
+              {site.tagline} · {site.city}, {site.region}
+            </p>
+          </div>
+          <p className="max-w-xs text-sm leading-relaxed text-clinic/70">
+            Licensed providers, medical-grade equipment, and a price you see
+            before anything begins.
           </p>
         </div>
 
-        {/* Explore */}
-        <div>
-          <h4 className="text-sm font-semibold uppercase tracking-widest text-gold">
-            Explore
-          </h4>
-          <ul className="mt-4 space-y-2 text-sm">
-            <li><Link href="/services" className="hover:text-white">Services</Link></li>
-            <li><Link href="/membership" className="hover:text-white">Membership</Link></li>
-            <li><Link href="/gift-cards" className="hover:text-white">Gift Cards</Link></li>
-            <li><Link href="/about" className="hover:text-white">About</Link></li>
-            <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
-          </ul>
-        </div>
+        <div className="grid gap-10 pt-10 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Visit */}
+          <div>
+            <h2 className="label text-mint">Visit</h2>
+            <address className="mt-5 space-y-2.5 text-sm not-italic text-clinic/75">
+              <p>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${fullAddress}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkStyle}
+                >
+                  {fullAddress}
+                </a>
+              </p>
+              <p>
+                <a href={site.phoneHref} className={linkStyle}>
+                  {site.phone}
+                </a>
+              </p>
+              <p>
+                <a href={`mailto:${site.email}`} className={linkStyle}>
+                  {site.email}
+                </a>
+              </p>
+            </address>
+          </div>
 
-        {/* Visit */}
-        <div>
-          <h4 className="text-sm font-semibold uppercase tracking-widest text-gold">
-            Visit
-          </h4>
-          <address className="mt-4 space-y-2 text-sm not-italic text-cream/80">
-            <p>
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${fullAddress}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-white/20 decoration-1 underline-offset-4 transition-colors hover:text-white hover:decoration-gold"
-              >
-                {fullAddress}
-              </a>
-            </p>
-            <p>
-              <a
-                href={site.phoneHref}
-                className="underline decoration-white/20 decoration-1 underline-offset-4 transition-colors hover:text-white hover:decoration-gold"
-              >
-                {site.phone}
-              </a>
-            </p>
-            <p>
-              <a
-                href={`mailto:${site.email}`}
-                className="underline decoration-white/20 decoration-1 underline-offset-4 transition-colors hover:text-white hover:decoration-gold"
-              >
-                {site.email}
-              </a>
-            </p>
-          </address>
-        </div>
+          {/* Hours */}
+          <div>
+            <h2 className="label text-mint">Hours</h2>
+            <ul className="mt-5 space-y-2 text-sm">
+              {site.hours.map((h) => (
+                <li
+                  key={h.day}
+                  className="flex justify-between gap-4 border-b border-clinic/10 pb-2 last:border-0"
+                >
+                  <span className="text-clinic/75">{h.day}</span>
+                  <span className="num text-[0.75rem] text-clinic/55">
+                    {h.time}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* Hours */}
-        <div>
-          <h4 className="text-sm font-semibold uppercase tracking-widest text-gold">
-            Hours
-          </h4>
-          <ul className="mt-4 space-y-1.5 text-sm text-cream/80">
-            {site.hours.map((h) => (
-              <li key={h.day} className="flex justify-between gap-4">
-                <span>{h.day}</span>
-                <span className="text-cream/60">{h.time}</span>
-              </li>
-            ))}
-          </ul>
+          {/* Explore */}
+          <div>
+            <h2 className="label text-mint">Explore</h2>
+            <ul className="mt-5 space-y-2.5 text-sm">
+              {[
+                { href: "/services", label: "Services & pricing" },
+                { href: "/membership", label: "Membership" },
+                { href: "/gift-cards", label: "Gift cards" },
+                { href: "/about", label: "About the clinic" },
+                { href: "/contact", label: "Contact & location" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-clinic/75 transition-colors hover:text-mint"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-cream/60 sm:flex-row">
-          <p>© {new Date().getFullYear()} {site.name} {site.tagline}. All rights reserved.</p>
-          <div className="flex gap-5">
+      <div className="border-t border-clinic/15">
+        <div className="mx-auto flex max-w-[84rem] flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row lg:px-12">
+          <p className="label-sm text-clinic/50">
+            © {new Date().getFullYear()} {site.name} {site.tagline}
+          </p>
+          <div className="flex gap-6">
             {site.social.instagram && (
-              <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-white">Instagram</a>
+              <a
+                href={site.social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="label-sm text-clinic/50 transition-colors hover:text-mint"
+              >
+                Instagram
+              </a>
             )}
             {site.social.facebook && (
-              <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-white">Facebook</a>
+              <a
+                href={site.social.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="label-sm text-clinic/50 transition-colors hover:text-mint"
+              >
+                Facebook
+              </a>
             )}
             {site.social.tiktok && (
-              <a href={site.social.tiktok} target="_blank" rel="noopener noreferrer" className="hover:text-white">TikTok</a>
+              <a
+                href={site.social.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="label-sm text-clinic/50 transition-colors hover:text-mint"
+              >
+                TikTok
+              </a>
             )}
           </div>
         </div>

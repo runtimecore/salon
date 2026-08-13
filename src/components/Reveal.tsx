@@ -22,8 +22,12 @@ export default function Reveal({ children, className = "", delay = 0 }: Props) {
     const el = ref.current;
     if (!el) return;
 
+    // No IntersectionObserver (very old browser, some test runners): show the
+    // content and stop. The class goes straight onto the node rather than
+    // through state — there's no re-render coming that could undo it, and
+    // setting state synchronously in an effect just costs a cascading render.
     if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
+      el.classList.add("is-visible");
       return;
     }
 

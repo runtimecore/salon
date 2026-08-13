@@ -1,94 +1,132 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import BookButton from "@/components/BookButton";
+import Reveal from "@/components/Reveal";
 import { site, fullAddress } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact & Location",
-  description: `Visit ${site.name} at ${fullAddress}. Find our hours, phone, and directions.`,
+  description: `Visit ${site.name} at ${fullAddress}. Hours, phone, directions, and online booking.`,
 };
 
+const shell = "mx-auto w-full max-w-[84rem] px-6 lg:px-12";
 const mapsQuery = encodeURIComponent(`${site.name} ${fullAddress}`);
+const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 
 export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Get in Touch"
-        title={`Visit ${site.name}`}
-        subtitle="We'd love to welcome you. Find us, call us, or book online anytime."
+        eyebrow="Visit"
+        title={`Find ${site.name}`}
+        subtitle="Call, email, or book online — whichever is quickest. If you're not sure what you need yet, book the consultation and ask us there."
       />
 
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="grid gap-12 lg:grid-cols-2">
+      <section className={`${shell} py-16 lg:py-20`}>
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
           {/* Details */}
-          <div>
-            <h2 className="text-2xl text-ink">Spa details</h2>
-
-            <div className="mt-6 space-y-6">
-              <div>
-                <h3 className="text-sm font-semibold uppercase tracking-widest text-gold-dark">
-                  Address
-                </h3>
-                <p className="mt-2 text-espresso/90">
+          <Reveal>
+            <div className="border-t border-mist">
+              <Row label="Address">
+                <p className="text-ink">
                   {site.addressLine1}
                   {site.addressLine2 ? `, ${site.addressLine2}` : ""}
                   <br />
                   {site.city}, {site.region} {site.postalCode}
                 </p>
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+                  href={mapsLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-1 inline-block text-sm font-medium text-gold-dark underline-offset-4 hover:underline"
+                  className="label group mt-3 inline-flex items-center gap-3 text-ink"
                 >
-                  Get directions →
+                  Get directions
+                  <span
+                    aria-hidden
+                    className="h-px w-6 bg-ink transition-all duration-300 group-hover:w-10 group-hover:bg-jade"
+                  />
                 </a>
-              </div>
+              </Row>
 
-              <div>
-                <h3 className="text-sm font-semibold uppercase tracking-widest text-gold-dark">
-                  Contact
-                </h3>
-                <p className="mt-2 text-espresso/90">
-                  <a href={site.phoneHref} className="hover:text-gold-dark">{site.phone}</a>
-                  <br />
-                  <a href={`mailto:${site.email}`} className="hover:text-gold-dark">{site.email}</a>
+              <Row label="Contact">
+                <p>
+                  <a
+                    href={site.phoneHref}
+                    className="num text-ink underline decoration-mist decoration-1 underline-offset-4 transition-colors hover:text-jade hover:decoration-jade"
+                  >
+                    {site.phone}
+                  </a>
                 </p>
-              </div>
+                <p className="mt-2">
+                  <a
+                    href={`mailto:${site.email}`}
+                    className="text-ink underline decoration-mist decoration-1 underline-offset-4 transition-colors hover:text-jade hover:decoration-jade"
+                  >
+                    {site.email}
+                  </a>
+                </p>
+              </Row>
 
-              <div>
-                <h3 className="text-sm font-semibold uppercase tracking-widest text-gold-dark">
-                  Hours
-                </h3>
-                <ul className="mt-2 space-y-1.5 text-espresso/90">
+              <Row label="Hours">
+                <ul className="max-w-xs">
                   {site.hours.map((h) => (
-                    <li key={h.day} className="flex max-w-xs justify-between gap-6">
-                      <span>{h.day}</span>
-                      <span className="text-muted">{h.time}</span>
+                    <li
+                      key={h.day}
+                      className="flex justify-between gap-6 border-b border-mist py-2 last:border-0"
+                    >
+                      <span className="text-ink">{h.day}</span>
+                      <span className="num text-[0.75rem] text-muted">
+                        {h.time}
+                      </span>
                     </li>
                   ))}
                 </ul>
-              </div>
-            </div>
+              </Row>
 
-            <div className="mt-8">
-              <BookButton className="px-8 py-3.5 text-base">Book an Appointment</BookButton>
+              <Row label="Booking">
+                <p className="max-w-sm text-sm leading-relaxed text-slate">
+                  Online booking runs through Fresha and confirms instantly.
+                  Consultations are free and take about twenty minutes.
+                </p>
+                <div className="mt-5">
+                  <BookButton>Book an appointment</BookButton>
+                </div>
+              </Row>
             </div>
-          </div>
+          </Reveal>
 
           {/* Map */}
-          <div className="overflow-hidden rounded-3xl border border-sand shadow-sm">
-            <iframe
-              title={`Map to ${site.name}`}
-              src={`https://www.google.com/maps?q=${mapsQuery}&output=embed`}
-              className="h-full min-h-[420px] w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+          <Reveal delay={80}>
+            <div className="h-full overflow-hidden rounded-[2px] border border-mist">
+              <iframe
+                title={`Map to ${site.name}`}
+                src={`https://www.google.com/maps?q=${mapsQuery}&output=embed`}
+                className="h-full min-h-[460px] w-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </Reveal>
         </div>
       </section>
     </>
+  );
+}
+
+/** One labelled block of the contact ledger: mono label left, content right. */
+function Row({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="grid gap-3 border-b border-mist py-7 sm:grid-cols-[7rem_1fr] sm:gap-8">
+      <h2 className="label pt-1 text-muted">{label}</h2>
+      <div className="text-[0.9375rem] leading-relaxed text-slate">
+        {children}
+      </div>
+    </div>
   );
 }

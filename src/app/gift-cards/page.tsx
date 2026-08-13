@@ -1,27 +1,35 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import ActionLink from "@/components/ActionLink";
+import GiftCardFace from "@/components/GiftCardFace";
+import Reveal from "@/components/Reveal";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Gift Cards",
-  description: `Give the gift of self-care. Purchase a ${site.name} gift card online — the perfect present for birthdays, holidays, and every occasion.`,
+  description: `Buy a ${site.name} gift card online. Redeemable against any treatment on the menu, delivered by email, and it never expires.`,
 };
 
+const shell = "mx-auto w-full max-w-[84rem] px-6 lg:px-12";
+
 const giftCardUrl = site.giftCardUrl || site.bookingUrl;
+const pendingTitle = "Gift card purchasing coming soon";
 
 const steps = [
   {
+    step: "01",
     title: "Choose an amount",
-    body: "Pick a preset value or enter a custom amount that suits your budget.",
+    body: "Pick a preset or enter your own at checkout. $25 covers a B12 shot; $175 covers a HydraFacial outright.",
   },
   {
-    title: "Add a personal message",
-    body: "Include a note and the recipient's email so it arrives just right.",
+    step: "02",
+    title: "Add a message",
+    body: "Write a note and give us the recipient's email. It arrives the moment you pay, or on a date you set.",
   },
   {
-    title: "They book & glow",
-    body: "The lucky recipient redeems it toward any treatment or product they love.",
+    step: "03",
+    title: "They book",
+    body: "They redeem it against any treatment or product. No expiry date, and no minimum spend to use it.",
   },
 ];
 
@@ -29,98 +37,93 @@ export default function GiftCardsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Gift Cards"
-        title="Give the gift of self-care"
-        subtitle={`A ${site.name} gift card is the perfect present for birthdays, holidays, thank-yous, or just because. Redeemable on any treatment or product.`}
+        eyebrow="Gift cards"
+        title="A gift with no wrong answer"
+        subtitle={`Redeemable against everything on the ${site.name} menu — surface to bloodstream. Delivered by email, valid forever, and refundable against nothing but a better mood.`}
       />
 
-      {/* Card visual + buy */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* Gift card mockup */}
-          <div className="relative">
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-espresso via-espresso to-[#5a4633] p-8 text-cream shadow-xl shadow-gold/10">
-              <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-gold/20 blur-2xl" />
-              <div className="flex h-full flex-col justify-between">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="font-serif text-2xl text-white">{site.name}</p>
-                    <p className="eyebrow text-gold">{site.tagline}</p>
-                  </div>
-                  <span className="rounded-full border border-gold/50 px-3 py-1 text-xs uppercase tracking-widest text-gold">
-                    Gift Card
-                  </span>
-                </div>
-                <div>
-                  <p className="text-sm text-cream/70">The gift of self-care</p>
-                  <p className="font-serif text-3xl text-white">Any amount</p>
-                </div>
+      {/* Card + amounts */}
+      <section className={`${shell} py-16 lg:py-20`}>
+        <div className="grid items-center gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
+          <Reveal>
+            <GiftCardFace />
+          </Reveal>
+
+          <Reveal delay={80}>
+            <div>
+              <h2 className="text-[clamp(1.6rem,3vw,2.25rem)]">
+                Choose an amount
+              </h2>
+              <p className="mt-4 max-w-md text-[0.9375rem] leading-relaxed text-slate">
+                Any value works — a card can cover a whole treatment or go
+                towards a course of them. Custom amounts are set at checkout.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                {site.giftCardAmounts.map((amount) => (
+                  <ActionLink
+                    key={amount}
+                    href={giftCardUrl}
+                    pendingTitle={pendingTitle}
+                    className="num rounded-[2px] border border-ink/20 px-6 py-3.5 text-[0.9375rem] text-ink transition-colors hover:border-jade hover:bg-jade hover:text-clinic"
+                  >
+                    ${amount}
+                  </ActionLink>
+                ))}
+                <ActionLink
+                  href={giftCardUrl}
+                  pendingTitle={pendingTitle}
+                  className="label rounded-[2px] border border-dashed border-ink/25 px-6 py-3.5 text-ink transition-colors hover:border-jade hover:text-jade"
+                >
+                  Custom
+                </ActionLink>
+              </div>
+
+              <div className="mt-10">
+                <ActionLink
+                  href={giftCardUrl}
+                  pendingTitle={pendingTitle}
+                  className="label inline-flex items-center justify-center rounded-[2px] bg-ink px-8 py-4 text-[0.6875rem] text-clinic transition-colors hover:bg-jade"
+                >
+                  Buy a gift card
+                </ActionLink>
+                <p className="num mt-4 text-[0.6875rem] text-muted">
+                  Also sold at the front desk · {site.addressLine1}
+                </p>
               </div>
             </div>
-          </div>
-
-          {/* Buy panel */}
-          <div>
-            <h2 className="text-3xl text-ink">Choose your amount</h2>
-            <p className="mt-3 text-muted">
-              Select a value to get started, or choose a custom amount at
-              checkout. Gift cards are delivered by email and never expire.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              {site.giftCardAmounts.map((amount) => (
-                <ActionLink
-                  key={amount}
-                  href={giftCardUrl}
-                  pendingTitle="Gift card purchasing coming soon"
-                  className="rounded-full border border-sand bg-white/70 px-6 py-3 font-serif text-lg text-espresso transition-colors hover:border-gold hover:bg-gold hover:text-white"
-                >
-                  ${amount}
-                </ActionLink>
-              ))}
-              <ActionLink
-                href={giftCardUrl}
-                pendingTitle="Gift card purchasing coming soon"
-                className="rounded-full border border-sand bg-white/70 px-6 py-3 text-sm font-medium text-espresso transition-colors hover:border-gold hover:text-gold-dark"
-              >
-                Custom
-              </ActionLink>
-            </div>
-
-            <div className="mt-8">
-              <ActionLink
-                href={giftCardUrl}
-                pendingTitle="Gift card purchasing coming soon"
-                className="inline-flex items-center justify-center rounded-full bg-gold px-9 py-4 text-base font-semibold text-white transition-colors hover:bg-gold-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
-              >
-                Buy a Gift Card
-              </ActionLink>
-              <p className="mt-3 text-sm text-muted">
-                Prefer in person? Gift cards are also available at the spa.
-              </p>
-            </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="bg-linen/60 py-16">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="text-center">
-            <p className="eyebrow text-gold-dark">How it works</p>
-            <h2 className="mt-2 text-3xl text-ink">Gifting made simple</h2>
-          </div>
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
+      {/* How it works — a real sequence, so it gets numbers */}
+      <section className="border-t border-mist bg-paper py-16 lg:py-24">
+        <div className={shell}>
+          <Reveal>
+            <p className="label flex items-center gap-3 text-jade">
+              <span aria-hidden className="h-px w-8 bg-jade" />
+              How it works
+            </p>
+            <h2 className="mt-6 max-w-xl text-[clamp(1.75rem,3.4vw,2.75rem)]">
+              Three minutes, start to sent
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-x-8 gap-y-10 border-t border-mist md:grid-cols-3">
             {steps.map((step, i) => (
-              <div key={step.title} className="text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 font-serif text-xl text-gold-dark ring-1 ring-gold/30">
-                  {i + 1}
+              <Reveal key={step.step} delay={i * 80}>
+                <div className="relative pt-7">
+                  <span
+                    aria-hidden
+                    className="absolute left-0 top-0 h-[3px] w-[3px] bg-jade"
+                  />
+                  <p className="num text-[0.6875rem] text-jade">{step.step}</p>
+                  <h3 className="mt-3 text-xl">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate">
+                    {step.body}
+                  </p>
                 </div>
-                <h3 className="mt-4 text-lg text-ink">{step.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  {step.body}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

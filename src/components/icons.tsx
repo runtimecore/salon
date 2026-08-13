@@ -1,14 +1,13 @@
 /**
- * Hairline icons for the homepage value props.
+ * Instrument marks for the standards on /about.
  *
- * Drawn by hand rather than pulled from an icon set so the stroke weight
- * matches the gold hairlines used elsewhere (the ledger rules, the alcove
- * outline). Rules for anything added here:
- *   · 24×24 viewBox, stroke-only, 1.4 weight, round caps and joins.
- *   · No enclosing circle — these sit inside a circular chip already, and a
- *     ring inside a ring reads as a rendering bug.
- *   · Decorative: the heading next to each one carries the meaning, so they
- *     are hidden from assistive tech.
+ * Drawn by hand rather than pulled from an icon set so the stroke matches the
+ * hairlines used everywhere else (the section rules, the annotation leaders,
+ * the depth gutter). Rules for anything added here:
+ *   · 24×24 viewBox, stroke-only, 1.25 weight, round caps and joins.
+ *   · Draw the instrument, not the metaphor — a caliper, not a "quality" tick.
+ *   · No enclosing shape; the heading beside each one carries the meaning, so
+ *     they're hidden from assistive tech.
  */
 
 type IconProps = { className?: string };
@@ -19,7 +18,7 @@ function Svg({ className = "", children }: IconProps & { children: React.ReactNo
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.4}
+      strokeWidth={1.25}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -31,51 +30,45 @@ function Svg({ className = "", children }: IconProps & { children: React.ReactNo
   );
 }
 
-/** Expert Providers — a laurel around a check: "board-certified", and a nod to
- *  the olive branches standing in the treatment rooms. */
-export function LaurelCheck(props: IconProps) {
+/** Mapped before we begin — a scale over a measured span. */
+export function Caliper(props: IconProps) {
   return (
     <Svg {...props}>
-      <path d="M7.6 4.6C4 7.6 4 15.2 8 18.8" />
-      <path d="M16.4 4.6C20 7.6 20 15.2 16 18.8" />
-      <path d="M9 11.9l2.2 2.4 4.2-4.6" />
+      <path d="M2.5 5.5h19" />
+      <path d="M7 5.5v3M12 5.5v4.5M17 5.5v3" />
+      <path d="M7 15h10" />
+      <path d="M7 12.8v4.4M17 12.8v4.4" />
     </Svg>
   );
 }
 
-/** Medical-Grade Products — a serum bottle with a dropper cap. */
-export function SerumBottle(props: IconProps) {
+/** Medical-grade devices — light, at a wavelength. */
+export function Waveform(props: IconProps) {
   return (
     <Svg {...props}>
-      <path d="M10 2.9h4v2.3h-4z" />
-      <path d="M10.9 5.2v1.7M13.1 5.2v1.7" />
-      <path d="M9.6 6.9h4.8a2 2 0 0 1 2 2v10.2a2 2 0 0 1-2 2H9.6a2 2 0 0 1-2-2V8.9a2 2 0 0 1 2-2z" />
-      <path d="M7.6 13.6h8.8" />
+      <path d="M2 12c1.6-5 3.2-5 4.8 0s3.2 5 4.8 0 3.2-5 4.8 0 3.2 5 4.8 0" />
     </Svg>
   );
 }
 
-/** Effortless Booking — a date with a check: reserved and confirmed. */
-export function BookedDate(props: IconProps) {
+/** Priced by the unit — a graduated vial, marked so you can read the dose. */
+export function Vial(props: IconProps) {
   return (
     <Svg {...props}>
-      <path d="M5.5 5.6h13a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2z" />
-      <path d="M3.5 10.1h17" />
-      <path d="M8.4 3.2v4.6M15.6 3.2v4.6" />
-      <path d="M9 14.9l2.1 2.2 4-4.3" />
+      <path d="M9.4 2.8h5.2" />
+      <path d="M10.6 2.8v3.6a2 2 0 0 1-.42 1.23L8.7 9.55a3 3 0 0 0-.62 1.83v7.42a2 2 0 0 0 2 2h3.84a2 2 0 0 0 2-2v-7.42a3 3 0 0 0-.62-1.83l-1.48-1.92a2 2 0 0 1-.42-1.23V2.8" />
+      <path d="M8.08 13.2h2.1M8.08 16.4h2.1" />
     </Svg>
   );
 }
 
-/** A Calming Space — the plaster archway, the same alcove the treatment
- *  photographs are masked into. The inner arch is load-bearing: a single dome
- *  on a groundline reads as a headstone, the opening makes it a doorway. */
-export function Archway(props: IconProps) {
+/** Licensed providers only — a credential with a seal. */
+export function Credential(props: IconProps) {
   return (
     <Svg {...props}>
-      <path d="M4.2 20.4v-8.4a7.8 7.8 0 0 1 15.6 0v8.4" />
-      <path d="M7.9 20.4v-8.1a4.1 4.1 0 0 1 8.2 0v8.1" />
-      <path d="M2.4 20.4h19.2" />
+      <path d="M4 5.4h16a1.5 1.5 0 0 1 1.5 1.5v10.2a1.5 1.5 0 0 1-1.5 1.5H4a1.5 1.5 0 0 1-1.5-1.5V6.9A1.5 1.5 0 0 1 4 5.4z" />
+      <circle cx="8.4" cy="12" r="2.5" />
+      <path d="M13.6 10.2h5M13.6 13.8h3.4" />
     </Svg>
   );
 }

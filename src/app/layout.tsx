@@ -1,18 +1,30 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Archivo, Instrument_Sans, Martian_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { site } from "@/lib/site";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+/**
+ * Three widths of one idea. Archivo carries the `wdth` axis so headlines can
+ * be extended (see `.display` in globals.css) — that's why the axis is
+ * requested explicitly; by default next/font ships weight only.
+ */
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin"],
+  display: "swap",
+  axes: ["wdth"],
+});
+
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument",
   subsets: ["latin"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const martianMono = Martian_Mono({
+  variable: "--font-martian",
   subsets: ["latin"],
   display: "swap",
 });
@@ -52,11 +64,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable} h-full antialiased`}
+      className={`${archivo.variable} ${instrumentSans.variable} ${martianMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-cream text-ink">
+      <body className="min-h-full flex flex-col bg-clinic text-ink">
+        <a
+          href="#main"
+          className="label sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:bg-ink focus:px-4 focus:py-3 focus:text-clinic"
+        >
+          Skip to content
+        </a>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

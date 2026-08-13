@@ -1,314 +1,419 @@
-import Image from "next/image";
 import Link from "next/link";
 import BookButton from "@/components/BookButton";
 import SignatureServiceCard from "@/components/SignatureServiceCard";
+import AnnotatedPhoto from "@/components/AnnotatedPhoto";
+import DepthChart from "@/components/DepthChart";
+import GiftCardFace from "@/components/GiftCardFace";
 import Reveal from "@/components/Reveal";
-import { featuredServices, serviceCategories } from "@/lib/services";
+import { stratumColor } from "@/components/StratumTag";
+import { featuredServices, strata } from "@/lib/services";
 import { memberships } from "@/lib/memberships";
 import { site } from "@/lib/site";
-import { LaurelCheck, SerumBottle, BookedDate, Archway } from "@/components/icons";
 
-const values = [
+const shell = "mx-auto w-full max-w-[84rem] px-6 lg:px-12";
+
+/** A real sequence — first visit to follow-up — so the numbering earns itself. */
+const visit = [
   {
-    title: "Expert Providers",
-    body: "A board-certified team that listens first, then delivers results you'll love to show off.",
-    Icon: LaurelCheck,
+    step: "01",
+    title: "Consult",
+    body: "You tell us what's bothering you. A provider looks at your skin, maps what's actually treatable, and says so plainly — including when the answer is “nothing yet”.",
   },
   {
-    title: "Medical-Grade Products",
-    body: "We use trusted, clinical-grade technology and products so your results last.",
-    Icon: SerumBottle,
+    step: "02",
+    title: "Plan",
+    body: "You see the layer, the dose, the number of sessions, and the total before anything is opened. Nothing gets added at the chair.",
   },
   {
-    title: "Effortless Booking",
-    body: "Reserve your spot online in under a minute, any time of day, and get instant confirmation.",
-    Icon: BookedDate,
+    step: "03",
+    title: "Treat",
+    body: "Your provider talks you through each step as it happens. Most appointments run under an hour, and most people go straight back to their day.",
   },
   {
-    title: "A Calming Space",
-    body: "A calm, welcoming space designed to make every visit feel like a moment for yourself.",
-    Icon: Archway,
+    step: "04",
+    title: "Review",
+    body: "We look at your results two weeks later. If something needs adjusting inside that window, the adjustment is on us.",
   },
 ];
 
 const testimonials = [
   {
     quote:
-      "The Botox results were so natural — exactly what I wanted. The team truly listened.",
-    name: "Sophia R.",
-  },
-  {
-    quote:
-      "Relaxing, professional, and always on time. FENITI has become my monthly ritual.",
+      "They talked me out of filler and into two sessions of microneedling. Cheaper, and my skin looks better than it has in years.",
     name: "Maya L.",
+    treatment: "Microneedling with RF",
   },
   {
     quote:
-      "From the moment you walk in, you feel cared for. My HydraFacial left my skin glowing.",
+      "The Botox looks like nothing happened, which is exactly what I asked for. My forehead still moves.",
+    name: "Sophia R.",
+    treatment: "Botox / Neurotoxin",
+  },
+  {
+    quote:
+      "First clinic that showed me the full price before starting. Nothing extra appeared at the desk afterwards.",
     name: "Daniela P.",
+    treatment: "HydraFacial",
   },
 ];
 
 export default function Home() {
+  const featuredPlan = memberships.find((m) => m.featured);
+
   return (
     <>
-      {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-linen">
-        {/* Decorative warm glows (gently floating) */}
-        <div className="animate-float pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-blush/40 blur-3xl" />
-        <div className="animate-float-slower pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-gold/20 blur-3xl" />
-
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
+      {/* ══ Hero ══════════════════════════════════════════════════════ */}
+      <section className="border-b border-mist bg-paper">
+        <div
+          className={`${shell} grid items-center gap-12 pb-16 pt-14 lg:grid-cols-[1.12fr_0.88fr] lg:gap-16 lg:pb-20 lg:pt-20`}
+        >
           <div>
-            <p className="hero-enter eyebrow text-gold-dark">{site.city} · Medical Spa</p>
-            <h1
-              className="hero-enter mt-4 text-5xl leading-[1.05] text-ink sm:text-6xl"
-              style={{ animationDelay: "120ms" }}
-            >
-              Look refreshed. <span className="text-gold-dark">Feel renewed.</span>
-            </h1>
-            <p
-              className="hero-enter mt-6 max-w-md text-lg leading-relaxed text-espresso/80"
-              style={{ animationDelay: "220ms" }}
-            >
-              At {site.name}, board-certified providers and a warm, modern space
-              come together to help you look and feel your best. Book your
-              moment of renewal today.
+            <p className="enter label flex items-center gap-3 text-jade">
+              <span aria-hidden className="h-px w-8 bg-jade" />
+              {site.tagline} · {site.city}
             </p>
-            <div
-              className="hero-enter mt-8 flex flex-wrap items-center gap-4"
-              style={{ animationDelay: "320ms" }}
+
+            <h1
+              className="enter mt-7 text-[clamp(2.15rem,3.9vw,3.6rem)]"
+              style={{ animationDelay: "90ms" }}
             >
-              <BookButton className="px-8 py-3.5 text-base">Book an Appointment</BookButton>
+              Your skin has layers.
+              <br />
+              <span className="display-quiet">Every treatment has a depth.</span>
+            </h1>
+
+            <p
+              className="enter mt-7 max-w-lg text-base leading-relaxed text-slate"
+              style={{ animationDelay: "180ms" }}
+            >
+              {site.name} is a licensed medical spa in {site.city}. Before
+              anything begins you&apos;ll know which layer we&apos;re treating,
+              how long it takes, and what it costs — written down, not implied.
+            </p>
+
+            <div
+              className="enter mt-9 flex flex-wrap items-center gap-x-8 gap-y-4"
+              style={{ animationDelay: "270ms" }}
+            >
+              <BookButton>Book an appointment</BookButton>
               <Link
                 href="/services"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-espresso underline-offset-4 hover:text-gold-dark hover:underline"
+                className="label group inline-flex items-center gap-3 text-ink"
               >
-                View Services →
+                See the treatment menu
+                <span
+                  aria-hidden
+                  className="h-px w-6 bg-ink transition-all duration-300 group-hover:w-10 group-hover:bg-jade"
+                />
               </Link>
             </div>
-            <div
-              className="hero-enter mt-10 flex items-center gap-8 text-sm text-muted"
-              style={{ animationDelay: "420ms" }}
+
+            <p
+              className="enter num mt-7 text-[0.6875rem] text-muted"
+              style={{ animationDelay: "340ms" }}
             >
-              <div>
-                <p className="font-serif text-2xl text-ink">10+</p>
-                <p>Years of care</p>
-              </div>
-              <div className="h-8 w-px bg-sand" />
-              <div>
-                <p className="font-serif text-2xl text-ink">5,000+</p>
-                <p>Happy clients</p>
-              </div>
-              <div className="h-8 w-px bg-sand" />
-              <div>
-                <p className="font-serif text-2xl text-ink">4.9★</p>
-                <p>Average rating</p>
-              </div>
-            </div>
+              Consultations are free · Open six days a week
+            </p>
           </div>
 
-          {/* Hero visual */}
-          <div className="hero-enter relative" style={{ animationDelay: "250ms" }}>
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-gold/10">
-              <Image
-                src="/images/hero.png"
-                alt={`Treatment room at ${site.name}`}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-6 -left-6 hidden rounded-2xl border border-sand bg-cream/95 px-6 py-4 shadow-lg sm:block">
-              <p className="font-serif text-lg text-ink">Walk in. Glow out.</p>
-              <p className="text-xs text-muted">Open 6 days a week</p>
-            </div>
+          <div className="enter-photo" style={{ animationDelay: "200ms" }}>
+            <AnnotatedPhoto
+              src="/images/hero.png"
+              alt={`A provider treating a client at ${site.name}`}
+              ratio="4/5"
+              priority
+              sizes="(max-width: 1024px) 92vw, 46vw"
+              plates={[
+                {
+                  x: 30,
+                  y: 19,
+                  side: "right",
+                  label: "Layer",
+                  value: "Surface · 0 mm",
+                  delay: 950,
+                },
+                {
+                  x: 93,
+                  y: 88,
+                  side: "left",
+                  label: "Session",
+                  value: "45 min",
+                  delay: 1150,
+                },
+              ]}
+            />
+          </div>
+        </div>
+
+        {/* Depth key — the legend for the entire site, stated once, up front */}
+        <div className="border-t border-mist">
+          <div className={`${shell} py-6`}>
+            <p className="label-sm mb-4 text-muted">Depth key</p>
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-6">
+              {strata.map((stratum, i) => (
+                <li
+                  key={stratum.id}
+                  className="enter-tick flex items-baseline gap-2.5"
+                  style={{ animationDelay: `${600 + i * 60}ms` }}
+                >
+                  <span
+                    aria-hidden
+                    className="mt-1 h-2.5 w-2.5 shrink-0 rounded-[1px]"
+                    style={{ background: stratumColor[stratum.id] }}
+                  />
+                  <span>
+                    <span className="label block text-ink">{stratum.name}</span>
+                    <span className="num mt-1 block text-[0.6875rem] text-muted">
+                      {stratum.depth}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* ── Value props ── */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {values.map((v, i) => (
-            <Reveal key={v.title} delay={i * 90}>
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold-dark ring-1 ring-gold/30">
-                <v.Icon className="h-[22px] w-[22px]" />
+      {/* ══ Depth chart ═══════════════════════════════════════════════ */}
+      <section className={`${shell} py-20 lg:py-28`}>
+        <Reveal>
+          <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-end lg:gap-16">
+            <div>
+              <p className="label flex items-center gap-3 text-jade">
+                <span aria-hidden className="h-px w-8 bg-jade" />
+                The menu, by depth
+              </p>
+              <h2 className="mt-6 max-w-2xl text-[clamp(2rem,4vw,3.25rem)]">
+                Where each treatment works
+              </h2>
+            </div>
+            <p className="max-w-md text-[0.9375rem] leading-relaxed text-slate lg:pb-2">
+              A facial and a filler are not the same kind of decision, and the
+              difference is depth. Here is the whole menu, cut top to bottom.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-12">
+          <DepthChart />
+        </div>
+
+        <Reveal>
+          <p className="num mt-6 max-w-2xl text-[0.6875rem] leading-relaxed text-muted">
+            Depths shown are typical published ranges. Yours are mapped by your
+            provider at consultation.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* ══ Signature treatments ══════════════════════════════════════ */}
+      <section className="border-y border-mist bg-paper py-20 lg:py-28">
+        <div className={shell}>
+          <Reveal>
+            <div className="flex flex-col justify-between gap-6 border-b border-mist pb-8 sm:flex-row sm:items-end">
+              <div>
+                <p className="label flex items-center gap-3 text-jade">
+                  <span aria-hidden className="h-px w-8 bg-jade" />
+                  Most booked
+                </p>
+                <h2 className="mt-6 text-[clamp(2rem,4vw,3.25rem)]">
+                  Signature treatments
+                </h2>
               </div>
-              <h3 className="text-lg text-ink">{v.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{v.body}</p>
+              <Link
+                href="/services"
+                className="label group inline-flex items-center gap-3 text-ink"
+              >
+                Full menu &amp; pricing
+                <span
+                  aria-hidden
+                  className="h-px w-6 bg-ink transition-all duration-300 group-hover:w-10 group-hover:bg-jade"
+                />
+              </Link>
+            </div>
+          </Reveal>
+
+          <div className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredServices.map((service, i) => (
+              <Reveal key={service.name} delay={(i % 3) * 80} className="h-full">
+                <SignatureServiceCard service={service} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ The visit ═════════════════════════════════════════════════ */}
+      <section className={`${shell} py-20 lg:py-28`}>
+        <Reveal>
+          <p className="label flex items-center gap-3 text-jade">
+            <span aria-hidden className="h-px w-8 bg-jade" />
+            How a visit works
+          </p>
+          <h2 className="mt-6 max-w-2xl text-[clamp(2rem,4vw,3.25rem)]">
+            What happens when you come in
+          </h2>
+        </Reveal>
+
+        <div className="mt-14 grid gap-x-8 gap-y-10 border-t border-mist sm:grid-cols-2 lg:grid-cols-4">
+          {visit.map((phase, i) => (
+            <Reveal key={phase.step} delay={i * 80}>
+              <div className="relative pt-7">
+                <span
+                  aria-hidden
+                  className="absolute left-0 top-0 h-[3px] w-[3px] bg-jade"
+                />
+                <p className="num text-[0.6875rem] text-jade">{phase.step}</p>
+                <h3 className="mt-3 text-xl">{phase.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate">
+                  {phase.body}
+                </p>
+              </div>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* ── Featured services ── */}
-      <section className="bg-linen/60 py-20">
-        <div className="mx-auto max-w-6xl px-6">
+      {/* ══ Membership ════════════════════════════════════════════════ */}
+      <section className="on-dark bg-petrol py-20 text-clinic lg:py-28">
+        <div className={shell}>
           <Reveal>
-            <div className="flex flex-col items-end justify-between gap-4 sm:flex-row">
+            <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
               <div>
-                <p className="eyebrow text-gold-dark">What we do</p>
-                <h2 className="mt-2 text-4xl text-ink">Our signature services</h2>
-                <p className="mt-3 max-w-md text-muted">
-                  The treatments our clients book most, with the time and cost
-                  up front.
+                <p className="label flex items-center gap-3 text-mint">
+                  <span aria-hidden className="h-px w-8 bg-mint" />
+                  Membership
                 </p>
-              </div>
-              <Link
-                href="/services"
-                className="text-sm font-semibold text-espresso underline-offset-4 hover:text-gold-dark hover:underline"
-              >
-                See full menu →
-              </Link>
-            </div>
-          </Reveal>
-
-          <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredServices.map((service, i) => (
-              <Reveal key={service.name} delay={(i % 3) * 70} className="h-full">
-                <SignatureServiceCard service={service} />
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal>
-            <div className="mt-10 flex flex-wrap justify-center gap-3">
-              {serviceCategories.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/services#${c.slug}`}
-                  className="rounded-full border border-sand bg-white/70 px-5 py-2 text-sm text-espresso transition-colors hover:border-gold hover:text-gold-dark"
-                >
-                  {c.title}
-                </Link>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Membership teaser ── */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <Reveal>
-          <div className="overflow-hidden rounded-[2rem] bg-espresso px-8 py-14 text-cream sm:px-14">
-            <div className="grid items-center gap-10 lg:grid-cols-2">
-              <div>
-                <p className="eyebrow text-gold">Become a member</p>
-                <h2 className="mt-3 text-4xl text-white">
-                  More glow, more often, for less.
+                <h2 className="mt-6 text-[clamp(2rem,4vw,3.25rem)] text-clinic">
+                  For skin that responds to repetition
                 </h2>
-                <p className="mt-4 max-w-md leading-relaxed text-cream/80">
-                  Join the {site.name} membership and enjoy monthly treatment
-                  credits, member-only pricing, and priority booking. Confidence
-                  as a habit, not a splurge.
+                <p className="mt-6 max-w-md leading-relaxed text-clinic/75">
+                  Most of what we do works on a schedule, not in a single visit.
+                  A membership puts a treatment credit in your account each
+                  month and holds your slot before the calendar fills.
                 </p>
-                <div className="mt-8 flex flex-wrap gap-4">
+                <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <Link
                     href="/membership"
-                    className="inline-flex items-center justify-center rounded-full bg-gold px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-gold-dark"
+                    className="label inline-flex items-center justify-center rounded-[2px] bg-clinic px-7 py-4 text-[0.6875rem] text-ink transition-colors hover:bg-mint"
                   >
-                    Explore Memberships
+                    Compare plans
                   </Link>
-                  <BookButton variant="light">Book a Visit</BookButton>
+                  <BookButton variant="ghost">Book a single visit</BookButton>
                 </div>
               </div>
-              <ul className="space-y-4">
-                {memberships.find((m) => m.featured)?.perks.map((perk) => (
-                  <li key={perk} className="flex items-start gap-3 text-cream/90">
-                    <span className="mt-1 text-gold">✦</span>
-                    <span>{perk}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Reveal>
-      </section>
 
-      {/* ── Testimonials ── */}
-      <section className="bg-linen/60 py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <Reveal>
-            <div className="text-center">
-              <p className="eyebrow text-gold-dark">Loved by our clients</p>
-              <h2 className="mt-2 text-4xl text-ink">Kind words</h2>
+              {featuredPlan && (
+                <div className="border-t border-clinic/20 pt-8">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <h3 className="text-2xl text-clinic">
+                      {featuredPlan.name}
+                    </h3>
+                    <p className="num text-lg text-mint">
+                      {featuredPlan.price}
+                      <span className="text-[0.6875rem] text-clinic/60">
+                        {featuredPlan.cadence}
+                      </span>
+                    </p>
+                  </div>
+                  <ul className="mt-6 space-y-0">
+                    {featuredPlan.perks.map((perk) => (
+                      <li
+                        key={perk}
+                        className="border-b border-clinic/10 py-3.5 text-sm text-clinic/80"
+                      >
+                        {perk}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </Reveal>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {testimonials.map((t, i) => (
-              <Reveal key={t.name} delay={i * 110}>
-                <figure className="flex h-full flex-col rounded-2xl border border-sand bg-white/70 p-7">
-                  <div className="text-gold">★★★★★</div>
-                  <blockquote className="mt-4 flex-1 text-espresso/90">
-                    “{t.quote}”
-                  </blockquote>
-                  <figcaption className="mt-5 font-serif text-lg text-ink">
-                    {t.name}
-                  </figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* ── Gift card teaser ── */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      {/* ══ Testimonials ══════════════════════════════════════════════ */}
+      <section className={`${shell} py-20 lg:py-28`}>
         <Reveal>
-          <div className="grid items-center gap-8 rounded-[2rem] border border-sand bg-linen px-8 py-12 sm:px-12 lg:grid-cols-[1.2fr_1fr]">
-            <div>
-              <p className="eyebrow text-gold-dark">Gift Cards</p>
-              <h2 className="mt-3 text-4xl text-ink">The perfect little luxury.</h2>
-              <p className="mt-4 max-w-md text-muted">
-                Not sure what to give? A {site.name} gift card lets them choose
-                their own moment of self-care — redeemable on any treatment or
-                product, and it never expires.
-              </p>
-              <div className="mt-7">
-                <Link
-                  href="/gift-cards"
-                  className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-gold-dark"
-                >
-                  Shop Gift Cards
-                </Link>
-              </div>
-            </div>
-            {/* Mini gift card visual */}
-            <div className="relative mx-auto w-full max-w-sm">
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-espresso via-espresso to-[#5a4633] p-6 text-cream shadow-lg shadow-gold/10">
-                <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-gold/20 blur-2xl" />
-                <div className="flex h-full flex-col justify-between">
-                  <div className="flex items-start justify-between">
-                    <p className="font-serif text-xl text-white">{site.name}</p>
-                    <span className="rounded-full border border-gold/50 px-2.5 py-0.5 text-[0.6rem] uppercase tracking-widest text-gold">
-                      Gift Card
-                    </span>
-                  </div>
-                  <p className="font-serif text-2xl text-white">Any amount</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <p className="label flex items-center gap-3 text-jade">
+            <span aria-hidden className="h-px w-8 bg-jade" />
+            In their words
+          </p>
         </Reveal>
+        <div className="mt-12 grid gap-x-8 gap-y-12 border-t border-mist md:grid-cols-3">
+          {testimonials.map((t, i) => (
+            <Reveal key={t.name} delay={i * 90}>
+              <figure className="relative flex h-full flex-col pt-8">
+                <span
+                  aria-hidden
+                  className="absolute left-0 top-0 h-[3px] w-[3px] bg-jade"
+                />
+                <blockquote className="flex-1 text-[1.125rem] leading-relaxed text-ink">
+                  {t.quote}
+                </blockquote>
+                <figcaption className="mt-6">
+                  <span className="label block text-ink">{t.name}</span>
+                  <span className="num mt-1.5 block text-[0.6875rem] text-muted">
+                    {t.treatment}
+                  </span>
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
-      {/* ── Final CTA ── */}
-      <section className="mx-auto max-w-4xl px-6 py-24 text-center">
-        <Reveal>
-          <p className="eyebrow text-gold-dark">Ready when you are</p>
-          <h2 className="mt-3 text-4xl text-ink sm:text-5xl">
-            Your next treatment is one click away.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted">
-            Reserve your appointment online in under a minute. We can&apos;t wait
-            to welcome you to {site.name}.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <BookButton className="px-10 py-4 text-base">Book Now</BookButton>
-          </div>
-        </Reveal>
+      {/* ══ Gift cards ════════════════════════════════════════════════ */}
+      <section className="border-y border-mist bg-paper py-20 lg:py-24">
+        <div className={shell}>
+          <Reveal>
+            <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+              <div>
+                <p className="label flex items-center gap-3 text-jade">
+                  <span aria-hidden className="h-px w-8 bg-jade" />
+                  Gift cards
+                </p>
+                <h2 className="mt-6 text-[clamp(1.75rem,3.4vw,2.75rem)]">
+                  Let them pick the treatment
+                </h2>
+                <p className="mt-5 max-w-md text-[0.9375rem] leading-relaxed text-slate">
+                  Redeemable against anything on the menu, from a $25 B12 shot
+                  to a course of laser. Delivered by email, and it never
+                  expires.
+                </p>
+                <Link
+                  href="/gift-cards"
+                  className="label mt-8 inline-flex items-center justify-center rounded-[2px] bg-ink px-7 py-4 text-[0.6875rem] text-clinic transition-colors hover:bg-jade"
+                >
+                  Buy a gift card
+                </Link>
+              </div>
+
+              <GiftCardFace className="mx-auto max-w-md" />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ══ Close ═════════════════════════════════════════════════════ */}
+      <section className="on-dark bg-ink py-24 text-clinic lg:py-32">
+        <div className={shell}>
+          <Reveal>
+            <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-end lg:gap-16">
+              <h2 className="max-w-3xl text-[clamp(2.25rem,5vw,4rem)] text-clinic">
+                Come in once. Leave knowing exactly what was done.
+              </h2>
+              <div className="lg:pb-3">
+                <p className="mb-7 max-w-sm leading-relaxed text-clinic/70">
+                  Booking takes about a minute and the consultation costs
+                  nothing. Bring your questions — the harder the better.
+                </p>
+                <BookButton variant="light">Book an appointment</BookButton>
+              </div>
+            </div>
+          </Reveal>
+        </div>
       </section>
     </>
   );
