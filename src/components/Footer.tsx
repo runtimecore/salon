@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { site, fullAddress } from "@/lib/site";
+import { site, fullAddress, mapsLink } from "@/lib/site";
 import { strata } from "@/lib/services";
 
 const linkStyle =
@@ -54,7 +54,7 @@ export default function Footer() {
             <address className="mt-5 space-y-2.5 text-sm not-italic text-clinic/75">
               <p>
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${fullAddress}`)}`}
+                  href={mapsLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={linkStyle}

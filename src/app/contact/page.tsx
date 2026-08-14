@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import BookButton from "@/components/BookButton";
 import Reveal from "@/components/Reveal";
-import { site, fullAddress } from "@/lib/site";
+import { site, fullAddress, mapsLink, mapsEmbedUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact & Location",
@@ -10,8 +10,6 @@ export const metadata: Metadata = {
 };
 
 const shell = "mx-auto w-full max-w-[84rem] px-6 lg:px-12";
-const mapsQuery = encodeURIComponent(`${site.name} ${fullAddress}`);
-const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 
 export default function ContactPage() {
   return (
@@ -95,16 +93,33 @@ export default function ContactPage() {
             </div>
           </Reveal>
 
-          {/* Map */}
+          {/* Map. The frame is OpenStreetMap because Apple refuses to be
+              framed (see mapsEmbedUrl); the link out of it is Apple's, which
+              is the pin the clinic actually publishes. Desaturated so a
+              stock map sits inside a mineral palette instead of shouting
+              through it. */}
           <Reveal delay={80}>
-            <div className="h-full overflow-hidden rounded-[2px] border border-mist">
+            <div className="relative h-full overflow-hidden rounded-[2px] border border-mist">
               <iframe
-                title={`Map to ${site.name}`}
-                src={`https://www.google.com/maps?q=${mapsQuery}&output=embed`}
+                title={`Map to ${site.name}, ${fullAddress}`}
+                src={mapsEmbedUrl}
                 className="h-full min-h-[460px] w-full"
+                style={{ filter: "saturate(0.45) contrast(1.03)" }}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
+              <a
+                href={mapsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="label group absolute bottom-3 right-3 flex items-center gap-2.5 rounded-[2px] border border-mist bg-clinic px-3.5 py-2.5 text-ink transition-colors hover:border-jade hover:text-jade"
+              >
+                Open in Maps
+                <span
+                  aria-hidden
+                  className="h-px w-5 bg-jade transition-all duration-300 group-hover:w-8"
+                />
+              </a>
             </div>
           </Reveal>
         </div>
