@@ -15,18 +15,22 @@ cream / sand / linen (backgrounds), ink / espresso (text), gold + gold-dark (pri
 
 ## Where content lives (edit these, not the components)
 - `src/lib/site.ts` — name, **Fresha `bookingUrl` / `giftCardUrl`**, contact, address, hours, socials, `url` (domain for SEO), gift-card amounts.
-- `src/lib/services.ts` — treatment categories (injectables, laser, facials, body, wellness), names, durations, prices (`popular` flag drives homepage feature + badge), and each service's own **Fresha `bookingUrl`** (from Fresha's Link builder) so its "Book" button opens Fresha with that service pre-selected; blank falls back to `site.bookingUrl` via `bookingUrlFor()`.
+- `src/lib/services.ts` — treatment categories (injectables, laser, facials, body, wellness), names, durations, prices (`popular` flag drives homepage feature + badge), and each service's own **Fresha `bookingUrl`** (from Fresha's Link builder) so its "Book" button opens Fresha with that service pre-selected; blank falls back to `site.bookingUrl` via `bookingUrlFor()`. Also **special offers**: give a service an `offer` block (`price`, `label`, `endsOn: "YYYY-MM-DD"`, optional `terms`) and it appears on `/special-offers` and shows sale pricing on its menu card. Delete the block to end the promo; an offer past `endsOn` disappears on its own.
 - `src/lib/memberships.ts` — membership tiers/perks.
 - Team names/roles: `src/app/about/page.tsx` (`team`, with `photo` paths into `public/images/`). Testimonials: `src/app/page.tsx`.
 
 ## Pages
-Home (`/`), Services, Membership, Gift Cards, About, Contact. Plus `sitemap.ts` + `robots.ts`. No `/book` page — CTAs funnel to Fresha.
+Home (`/`), Special Offers, Services, Membership, Gift Cards, About, Contact. Plus `sitemap.ts` + `robots.ts`. No `/book` page — CTAs funnel to Fresha.
+
+`/special-offers` and `/services` both set `export const revalidate = 3600`: offer pricing expires by date, so they re-render hourly instead of being baked in at build time. (Route segment config is valid here because Cache Components is not enabled in `next.config.ts`.) The offers page handles an empty state — when every offer has expired it points at memberships and the full menu rather than showing an empty grid.
 
 ## Key components
 - `BookButton.tsx` — the primary CTA; links to `site.bookingUrl`. **Degrades gracefully when the URL is empty** (renders but inert, "coming soon" tooltip). Client component.
 - `ActionLink.tsx` — same graceful-empty behavior for arbitrary external links (used by gift-card buttons).
 - `Reveal.tsx` — IntersectionObserver scroll-reveal wrapper (fade + slide up). Falls back to visible if unsupported.
-- Homepage animations: `.hero-enter` (staggered load-in), `.animate-float` (drifting glows), `.reveal` — all defined in `globals.css` with a `prefers-reduced-motion` fallback.
+- `OfferCard.tsx` / `OfferCountdown.tsx` — the discount card (rose ribbon, struck-through old price) and the live countdown. The countdown renders the plain end date on the server and only starts ticking after mount, so hydration always matches and no-JS readers still see a deadline; under 72h it turns rose and says "Hurry".
+- Homepage animations: `.hero-enter` (staggered load-in), `.animate-float` (drifting glows), `.reveal`, `.pulse-dot` (the live-offer marker) — all defined in `globals.css` with a `prefers-reduced-motion` fallback.
+- Nav: the header shows six links, which no longer fit at `md` — the full bar starts at `lg` and the burger menu covers everything below.
 
 ## Photos
 Real photos are in place under `public/images/`: `hero.png` (homepage), `about-interior.png` (About page story shot), and four team headshots (`team-founder.png`, `team-nurse-injector.png`, `team-esthetician.png`, `team-care-coordinator.png`) wired up in `src/app/about/page.tsx`. All AI-generated placeholders — swap for real photography before launch.
@@ -36,7 +40,7 @@ Real photos are in place under `public/images/`: `hero.png` (homepage), `about-i
 - `bookingUrl` and `giftCardUrl` are intentionally **empty** — the owner created a Fresha *business* account but hasn't enabled online booking (it required entering billing details). Buttons stay inert until real links are pasted in. There is no Fresha developer sandbox; the free business account is the only source of a booking link.
 
 ## Pending before true launch
-Real Fresha links, real treatments/prices/memberships, real photos (replace the AI-generated placeholders in `public/images/`), real team + testimonials. Domain is still a placeholder (`fenitimedspa.com`) — update `site.url` once the real domain is set.
+Real Fresha links, real treatments/prices/memberships, real photos (replace the AI-generated placeholders in `public/images/`), real team + testimonials. Domain is still a placeholder (`fenitimedspa.com`) — update `site.url` once the real domain is set. The six demo offers in `services.ts` end on **Aug–Sep 2026** dates; push those forward or the Special Offers page goes to its empty state.
 
 ## Commands
 ```

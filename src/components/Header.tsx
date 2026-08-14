@@ -6,6 +6,9 @@ import { site } from "@/lib/site";
 import BookButton from "./BookButton";
 
 const navLinks = [
+  // `highlight` marks the promo link — it gets a gold dot so the eye lands on
+  // it first without the nav turning into a billboard.
+  { href: "/special-offers", label: "Special Offers", highlight: true },
   { href: "/services", label: "Services" },
   { href: "/membership", label: "Membership" },
   { href: "/gift-cards", label: "Gift Cards" },
@@ -30,14 +33,23 @@ export default function Header() {
           <span className="eyebrow text-gold-dark">{site.tagline}</span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden items-center gap-8 md:flex">
+        {/* Desktop nav. Six links plus the CTA no longer fit at the md
+            breakpoint, so the full bar starts at lg and the burger covers
+            everything below it. */}
+        <div className="hidden items-center gap-6 lg:flex xl:gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-espresso transition-colors hover:text-gold-dark"
+              className={`text-sm font-medium transition-colors hover:text-gold-dark ${
+                link.highlight
+                  ? "inline-flex items-center gap-1.5 text-gold-dark"
+                  : "text-espresso"
+              }`}
             >
+              {link.highlight && (
+                <span aria-hidden className="pulse-dot h-1.5 w-1.5 rounded-full bg-gold" />
+              )}
               {link.label}
             </Link>
           ))}
@@ -50,7 +62,7 @@ export default function Header() {
           aria-label="Toggle menu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 items-center justify-center rounded-full text-espresso md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-full text-espresso lg:hidden"
         >
           <span className="sr-only">Menu</span>
           <div className="space-y-1.5">
@@ -63,15 +75,22 @@ export default function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-sand/70 bg-cream px-6 py-4 md:hidden">
+        <div className="border-t border-sand/70 bg-cream px-6 py-4 lg:hidden">
           <div className="flex flex-col gap-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="text-base font-medium text-espresso"
+                className={`text-base font-medium ${
+                  link.highlight
+                    ? "inline-flex items-center gap-2 text-gold-dark"
+                    : "text-espresso"
+                }`}
               >
+                {link.highlight && (
+                  <span aria-hidden className="pulse-dot h-1.5 w-1.5 rounded-full bg-gold" />
+                )}
                 {link.label}
               </Link>
             ))}

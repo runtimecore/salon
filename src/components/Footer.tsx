@@ -20,6 +20,7 @@ export default function Footer() {
             Explore
           </h4>
           <ul className="mt-4 space-y-2 text-sm">
+            <li><Link href="/special-offers" className="text-gold hover:text-white">Special Offers</Link></li>
             <li><Link href="/services" className="hover:text-white">Services</Link></li>
             <li><Link href="/membership" className="hover:text-white">Membership</Link></li>
             <li><Link href="/gift-cards" className="hover:text-white">Gift Cards</Link></li>

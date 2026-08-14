@@ -120,6 +120,25 @@ h1, h2, h3, h4 {
   animation: floatSlow 13s ease-in-out infinite;
 }
 
+/* The "live offer" pulse — on the nav marker and on a countdown that is nearly
+   out of time. Kept to opacity + a small scale on a 6px dot so it reads as a
+   heartbeat, not a flashing sale sticker. */
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.75);
+  }
+}
+
+.pulse-dot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
 /* Scroll-reveal: hidden until the Reveal component adds .is-visible.
    Kept short and shallow (14px, not 28) so content settles into place as the
    page moves rather than lurching in behind it. No `will-change` here — there
@@ -146,6 +165,7 @@ h1, h2, h3, h4 {
   .hero-enter,
   .animate-float,
   .animate-float-slower,
+  .pulse-dot,
   .reveal {
     animation: none !important;
     transition: none !important;

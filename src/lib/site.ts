@@ -29,11 +29,11 @@ export const site = {
   phone: "(555) 123-4567",
   phoneHref: "tel:+15551234567",
   email: "hello@fenitimedspa.com",
-  addressLine1: "123 Rosewood Avenue",
-  addressLine2: "Suite 5",
-  city: "Los Angeles",
+  addressLine1: "13720 Victory Blvd",
+  addressLine2: "",
+  city: "Van Nuys",
   region: "CA",
-  postalCode: "90012",
+  postalCode: "91401",
 
   // Used for SEO metadata (your final domain).
   url: "https://www.fenitimedspa.com",
@@ -57,4 +57,10 @@ export const site = {
   ],
 } as const;
 
-export const fullAddress = `${site.addressLine1}, ${site.addressLine2}, ${site.city}, ${site.region} ${site.postalCode}`;
+export const fullAddress = [
+  site.addressLine1,
+  site.addressLine2,
+  `${site.city}, ${site.region} ${site.postalCode}`,
+]
+  .filter(Boolean)
+  .join(", ");

@@ -6,6 +6,7 @@ type Props = {
   className?: string;
   /** Shown as a tooltip while the link isn't set yet. */
   pendingTitle?: string;
+  onClick?: () => void;
 };
 
 /**
@@ -18,6 +19,7 @@ export default function ActionLink({
   children,
   className = "",
   pendingTitle = "Coming soon",
+  onClick,
 }: Props) {
   if (!href) {
     return (
@@ -25,7 +27,10 @@ export default function ActionLink({
         href="#"
         aria-disabled="true"
         title={pendingTitle}
-        onClick={(e) => e.preventDefault()}
+        onClick={(e) => {
+          e.preventDefault();
+          onClick?.();
+        }}
         className={className}
       >
         {children}
@@ -38,6 +43,7 @@ export default function ActionLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={onClick}
       className={className}
     >
       {children}

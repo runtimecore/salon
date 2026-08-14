@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import ActionLink from "@/components/ActionLink";
+import GiftCardAmountPicker from "@/components/GiftCardAmountPicker";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -41,10 +42,33 @@ export default function GiftCardsPage() {
           <div className="relative">
             <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-espresso via-espresso to-[#5a4633] p-8 text-cream shadow-xl shadow-gold/10">
               <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-gold/20 blur-2xl" />
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 120 120"
+                className="pointer-events-none absolute bottom-5 right-6 h-14 w-14 text-cream/30"
+                fill="none"
+              >
+                <path
+                  d="M60 14c8 12 8 20 0 32c-8-12-8-20 0-32ZM106 60c-12 8-20 8-32 0c12-8 20-8 32 0ZM60 106c-8-12-8-20 0-32c8 12 8 20 0 32ZM14 60c12-8 20-8 32 0c-12 8-20 8-32 0ZM88 32c-4 12-10 18-22 22c4-12 10-18 22-22ZM88 88c-12-4-18-10-22-22c12 4 18 10 22 22ZM32 88c4-12 10-18 22-22c-4 12-10 18-22 22ZM32 32c12 4 18 10 22 22c-12-4-18-10-22-22Z"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="7"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                />
+              </svg>
               <div className="flex h-full flex-col justify-between">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="font-serif text-2xl text-white">{site.name}</p>
+                    <p className="font-serif text-2xl text-white">
+                      {site.name}
+                    </p>
                     <p className="eyebrow text-gold">{site.tagline}</p>
                   </div>
                   <span className="rounded-full border border-gold/50 px-3 py-1 text-xs uppercase tracking-widest text-gold">
@@ -67,25 +91,10 @@ export default function GiftCardsPage() {
               checkout. Gift cards are delivered by email and never expire.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              {site.giftCardAmounts.map((amount) => (
-                <ActionLink
-                  key={amount}
-                  href={giftCardUrl}
-                  pendingTitle="Gift card purchasing coming soon"
-                  className="rounded-full border border-sand bg-white/70 px-6 py-3 font-serif text-lg text-espresso transition-colors hover:border-gold hover:bg-gold hover:text-white"
-                >
-                  ${amount}
-                </ActionLink>
-              ))}
-              <ActionLink
-                href={giftCardUrl}
-                pendingTitle="Gift card purchasing coming soon"
-                className="rounded-full border border-sand bg-white/70 px-6 py-3 text-sm font-medium text-espresso transition-colors hover:border-gold hover:text-gold-dark"
-              >
-                Custom
-              </ActionLink>
-            </div>
+            <GiftCardAmountPicker
+              giftCardUrl={giftCardUrl}
+              amounts={site.giftCardAmounts}
+            />
 
             <div className="mt-8">
               <ActionLink

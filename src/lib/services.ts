@@ -5,12 +5,41 @@ import { site } from "./site";
  * ── EDIT: swap in the salon's real services, prices, and durations. ──
  * Prices are display strings so you can use "from $X" where it helps.
  */
+/**
+ * A limited-time discount on a service.
+ *
+ * ── EDIT: add an `offer` to any service below and it shows up on
+ * /special-offers by itself, and that service's card starts showing the
+ * sale price. Delete the block to end the promotion. ──
+ */
+export type ServiceOffer = {
+  /**
+   * The promo price, e.g. "$139". The service's regular `price` is shown
+   * struck through next to it, so keep the two in the same format
+   * ("$175" → "$139", "from $250" → "from $199").
+   */
+  price: string;
+  /** Short badge text: "Save $36", "20% off". Keep it to ~12 characters. */
+  label: string;
+  /**
+   * Last day the offer runs, as "YYYY-MM-DD". It stays live until the end of
+   * that day and then drops off the site on its own — the offers and services
+   * pages re-render hourly, so no redeploy is needed. A malformed date is
+   * treated as expired (the offer simply won't show).
+   */
+  endsOn: string;
+  /** Optional fine print under the price, e.g. "New clients only." */
+  terms?: string;
+};
+
 export type Service = {
   name: string;
   description: string;
   duration: string;
   price: string;
   popular?: boolean;
+  /** Limited-time discount. See `ServiceOffer` — omit when nothing is on sale. */
+  offer?: ServiceOffer;
   /**
    * Photo for the homepage "signature services" section, as a path into
    * `public/images` (e.g. "/images/service-botox.png"). Shoot or crop these
@@ -46,6 +75,71 @@ export function bookingUrlFor(service: Service): string {
   return service.bookingUrl || site.bookingUrl;
 }
 
+/* ── Special offers ───────────────────────────────────────────────────────
+   Offers are just services carrying an `offer` block, so there is one place
+   to edit a treatment — its price, its Fresha link, and its discount all sit
+   together in the catalog below. Everything here derives from that. */
+
+/**
+ * The instant an offer stops being valid: the last millisecond of `endsOn`.
+ * Returns NaN for a malformed date, which makes `isOfferLive` false — a typo
+ * hides the offer rather than showing a countdown to nowhere.
+ *
+ * Parsed as local time, so "ends Aug 31" means midnight where the reader is
+ * (near enough where the spa is) rather than midnight UTC.
+ */
+export function offerEndsAt(offer: ServiceOffer): number {
+  const [year, month, day] = offer.endsOn.split("-").map(Number);
+  if (!year || !month || !day) return NaN;
+  return new Date(year, month - 1, day, 23, 59, 59, 999).getTime();
+}
+
+export function isOfferLive(offer: ServiceOffer, now: number = Date.now()): boolean {
+  return offerEndsAt(offer) > now;
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/**
+ * "Aug 31" — the deadline as a plain string. Formatted by hand rather than
+ * with `toLocaleDateString` so the server and the browser can never disagree
+ * about locale or timezone and trip a hydration mismatch.
+ */
+export function formatOfferEnd(offer: ServiceOffer): string {
+  const [, month, day] = offer.endsOn.split("-").map(Number);
+  const name = MONTHS[month - 1];
+  return name ? `${name} ${day}` : offer.endsOn;
+}
+
+/** A service known to be on offer, tagged with the category it came from. */
+export type OfferedService = Service & {
+  offer: ServiceOffer;
+  category: string;
+  categorySlug: string;
+};
+
+/**
+ * Every live offer, soonest deadline first — so the page leads with whatever
+ * the client would miss out on next. Expired offers are dropped, and the pages
+ * that call this revalidate hourly so that stays true without a deploy.
+ */
+export function liveOffers(now: number = Date.now()): OfferedService[] {
+  return serviceCategories
+    .flatMap((c) =>
+      c.services.map((s) => ({ ...s, category: c.short, categorySlug: c.slug })),
+    )
+    .filter((s): s is OfferedService => !!s.offer && isOfferLive(s.offer, now))
+    .sort((a, b) => offerEndsAt(a.offer) - offerEndsAt(b.offer));
+}
+
+/** The offer on this service if it's still running, otherwise undefined. */
+export function liveOfferFor(
+  service: Service,
+  now: number = Date.now(),
+): ServiceOffer | undefined {
+  return service.offer && isOfferLive(service.offer, now) ? service.offer : undefined;
+}
+
 export type ServiceCategory = {
   slug: string;
   title: string;
@@ -78,6 +172,15 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "30 min",
         price: "from $650",
         popular: true,
+        // NOTE: the `endsOn` dates on this and the offers below are demo
+        // values. Push them forward (or delete the `offer` blocks) before
+        // launch — once a date passes, that offer disappears from the site.
+        offer: {
+          price: "from $550",
+          label: "Save $100",
+          endsOn: "2026-08-31",
+          terms: "One syringe per guest.",
+        },
         image: "/images/service-lip-filler.png",
         imageAlt: "A client's lips and jawline assessed before filler",
         bookingUrl: "",
@@ -117,6 +220,11 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "30 min",
         price: "from $250",
         popular: true,
+        offer: {
+          price: "from $199",
+          label: "20% off",
+          endsOn: "2026-08-23",
+        },
         image: "/images/service-photofacial.png",
         imageAlt:
           "A client in protective eyewear receiving an IPL photofacial",
@@ -143,6 +251,12 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "45 min",
         price: "$175",
         popular: true,
+        offer: {
+          price: "$139",
+          label: "Save $36",
+          endsOn: "2026-08-31",
+          terms: "New clients only.",
+        },
         image: "/images/service-hydrafacial.png",
         imageAlt: "A HydraFacial wand passing over a client's cheek",
         bookingUrl: "",
@@ -166,6 +280,11 @@ export const serviceCategories: ServiceCategory[] = [
         description: "Gentle exfoliation for instantly smoother, brighter skin.",
         duration: "30 min",
         price: "$95",
+        offer: {
+          price: "$75",
+          label: "Save $20",
+          endsOn: "2026-08-18",
+        },
         bookingUrl: "",
       },
     ],
@@ -182,6 +301,12 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "60 min",
         price: "from $600",
         popular: true,
+        offer: {
+          price: "from $480",
+          label: "20% off",
+          endsOn: "2026-09-15",
+          terms: "Per treated area. Consultation required.",
+        },
         image: "/images/service-coolsculpting.png",
         imageAlt: "A CoolSculpting applicator in place during treatment",
         bookingUrl: "",
@@ -207,6 +332,11 @@ export const serviceCategories: ServiceCategory[] = [
         duration: "45 min",
         price: "from $150",
         popular: true,
+        offer: {
+          price: "from $119",
+          label: "Save $31",
+          endsOn: "2026-08-31",
+        },
         image: "/images/service-iv-drip.png",
         imageAlt: "A client resting in a lounge chair during an IV vitamin drip",
         bookingUrl: "",
