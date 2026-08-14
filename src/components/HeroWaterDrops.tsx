@@ -21,7 +21,7 @@ const ROSE = "201, 139, 126";
    fixed fraction — the copy block gets proportionally shorter as the viewport
    widens (~55% of the hero at 390px, ~35% at 820px) — so the stacked geometry
    is measured off the photo rather than guessed. */
-const WATER_LINE_WIDE = 0.95;
+const WATER_LINE_WIDE = 0.75;
 const LANDING_SPREAD_WIDE = 0.3;
 /** Clearance above the photo for the surface, and for the lowest landing. */
 const SURFACE_ABOVE_PHOTO = 110;
@@ -31,7 +31,7 @@ const LANDING_ABOVE_PHOTO = 60;
    edge at ~51-52% of the viewport anywhere in the `lg` range, so a spawn band
    ending at 0.46 keeps every drop over the words. Stacked, the copy is the
    full width, so there's nothing to narrow. */
-const COPY_COLUMN_WIDTH = 0.46;
+const COPY_COLUMN_WIDTH = 0.55;
 const LG = "(min-width: 1024px)";
 
 type Drop = { x: number; y: number; vy: number; size: number; targetY: number };
@@ -152,11 +152,11 @@ export default function HeroWaterDrops() {
     const spawnDrop = () => {
       const size = 3 + Math.random() * 4;
       drops.push({
-        x: W * spawnWidth() * (0.08 + Math.random() * 0.84),
+        x: W * spawnWidth() * (0.2 + Math.random() * 0.6),
         y: -size * 3,
         vy: 3 + Math.random() * 10, // speed 1
         size,
-        targetY: surface() + Math.random() * (landingFloor() - surface()),
+        targetY: surface() + Math.random() * (landingFloor() - surface()) * 1.2,
       });
     };
 
