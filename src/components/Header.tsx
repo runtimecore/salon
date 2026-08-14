@@ -7,6 +7,10 @@ import BookButton from "./BookButton";
 
 const navLinks = [
   { href: "/services", label: "Services" },
+  // Flagged rather than styled loud: jade is the site's action colour, so an
+  // item that costs less than the menu says gets the action colour and nothing
+  // more — no badge, no colour from outside the palette.
+  { href: "/offers", label: "Special Offers", flag: true },
   { href: "/membership", label: "Membership" },
   { href: "/gift-cards", label: "Gift Cards" },
   { href: "/about", label: "About" },
@@ -44,12 +48,14 @@ export default function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-9 lg:flex">
+        <div className="hidden items-center gap-6 lg:flex xl:gap-9">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="label relative text-slate transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-jade after:transition-transform after:duration-300 hover:text-ink hover:after:scale-x-100"
+              className={`label relative transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-jade after:transition-transform after:duration-300 hover:text-ink hover:after:scale-x-100 ${
+                link.flag ? "text-jade" : "text-slate"
+              }`}
             >
               {link.label}
             </Link>
@@ -91,7 +97,9 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="label border-b border-mist py-4 text-slate"
+                className={`label border-b border-mist py-4 ${
+                  link.flag ? "text-jade" : "text-slate"
+                }`}
               >
                 {link.label}
               </Link>

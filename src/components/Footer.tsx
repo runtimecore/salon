@@ -99,6 +99,7 @@ export default function Footer() {
             <ul className="mt-5 space-y-2.5 text-sm">
               {[
                 { href: "/services", label: "Services & pricing" },
+                { href: "/offers", label: "Special offers" },
                 { href: "/membership", label: "Membership" },
                 { href: "/gift-cards", label: "Gift cards" },
                 { href: "/about", label: "About the clinic" },

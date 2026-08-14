@@ -73,6 +73,43 @@ export const stratumById = (id: StratumId): Stratum =>
   strata.find((s) => s.id === id) ?? strata[0];
 
 /**
+ * ── Special offers ────────────────────────────────────────────────────
+ * A discount hanging off a treatment that's already on the menu. There is
+ * no separate "offers" catalogue: an offer is a price attached to a service,
+ * so the promotion can never drift out of sync with the treatment it
+ * discounts.
+ *
+ * **No dates, deliberately.** An offer carries no closing date and no
+ * countdown — it runs for exactly as long as this field is here. Ending a
+ * promotion means deleting the `offer` block (or commenting it out), and the
+ * treatment goes straight back to its list price everywhere. Nothing on the
+ * page can go stale on its own, because nothing on the page is a deadline.
+ *
+ * ⚠ Every field here is a claim a customer relies on. Write the real price
+ * and — if you use `spots` — a real cap you intend to honour. Manufactured
+ * scarcity is the one thing on this page that can cost the clinic more than
+ * the discount.
+ */
+export type Offer = {
+  /** Why the price is down, e.g. "Glow reset". The kicker on the card. Keep
+   *  months and seasons out of it — the page carries no dates, and a label
+   *  reading "August reset" in November undoes that. */
+  label: string;
+  /** The offer price, written like `price` ("$140", "from $195", "$10/unit"). */
+  price: string;
+  /** What's saved, in the clearest form for this offer: "Save $35", "20% off". */
+  saving: string;
+  /**
+   * A genuine cap on how many are available, if there is one. Leave it out
+   * for open-ended offers rather than inventing a number — see the warning
+   * above. Update `left` as they go.
+   */
+  spots?: { left: number; total: number };
+  /** One line of condition, shown small under the button. */
+  terms?: string;
+};
+
+/**
  * Service catalog.
  * ── EDIT: swap in the salon's real services, prices, and durations. ──
  * Prices are display strings so you can use "from $X" where it helps.
@@ -119,6 +156,12 @@ export type Service = {
    * Leave empty and the button falls back to the general `site.bookingUrl`.
    */
   bookingUrl?: string;
+  /**
+   * A discount on this treatment. Drives the whole /offers page and the
+   * struck-through price on the menu. Delete it and the treatment simply
+   * sells at list price again.
+   */
+  offer?: Offer;
 };
 
 /**
@@ -157,6 +200,13 @@ export const serviceCategories: ServiceCategory[] = [
         image: "/images/service-botox.png",
         imageAlt: "A provider marking injection points on a client's forehead",
         bookingUrl: "",
+        offer: {
+          label: "Unit price held",
+          price: "$10/unit",
+          saving: "Save $2/unit",
+          terms:
+            "Applies to the units used in a single visit. Minimum 20 units.",
+        },
       },
       {
         name: "Lip Filler",
@@ -204,6 +254,13 @@ export const serviceCategories: ServiceCategory[] = [
         layer: "dermis",
         spec: "755–1064 nm",
         bookingUrl: "",
+        offer: {
+          label: "Course of six",
+          price: "from $150",
+          saving: "Save $300 over the course",
+          terms:
+            "Per-session price when all six are booked together. Hair grows in cycles; six is what it takes.",
+        },
       },
       {
         name: "Photofacial (IPL)",
@@ -217,6 +274,13 @@ export const serviceCategories: ServiceCategory[] = [
         imageAlt:
           "A client in protective eyewear receiving an IPL photofacial",
         bookingUrl: "",
+        offer: {
+          label: "Pigment clinic",
+          price: "from $195",
+          saving: "22% off",
+          terms:
+            "Best booked once UV exposure drops — your provider will say if now isn't the moment.",
+        },
       },
       {
         name: "Microneedling with RF",
@@ -246,6 +310,13 @@ export const serviceCategories: ServiceCategory[] = [
         image: "/images/service-hydrafacial.png",
         imageAlt: "A HydraFacial wand passing over a client's cheek",
         bookingUrl: "",
+        offer: {
+          label: "Glow reset",
+          price: "$140",
+          saving: "Save $35",
+          spots: { left: 12, total: 40 },
+          terms: "One per client. Capped at what the treatment room can hold.",
+        },
       },
       {
         name: "Signature Med Spa Facial",
@@ -358,6 +429,24 @@ export const allServices: FeaturedService[] = serviceCategories.flatMap((c) =>
 export const featuredServices: FeaturedService[] = allServices.filter(
   (s) => s.popular,
 );
+
+/** A treatment that is definitely discounted right now — `offer` is non-null,
+ *  so cards built from this type don't have to guard every field. */
+export type OfferedService = FeaturedService & { offer: Offer };
+
+/**
+ * Every discounted treatment — the /offers page in one call. They come out in
+ * menu order (shallowest category first, as authored above), and the first one
+ * gets the deep panel at the top of the page: to change what leads, move its
+ * service up the catalogue.
+ *
+ * There is no date filtering here on purpose. An offer is listed for as long
+ * as it exists in the catalogue and not a moment longer — see the note on the
+ * `Offer` type.
+ */
+export function offeredServices(): OfferedService[] {
+  return allServices.filter((s): s is OfferedService => !!s.offer);
+}
 
 /**
  * The menu re-sorted by depth instead of by category — the shape the depth

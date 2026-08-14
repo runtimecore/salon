@@ -5,7 +5,7 @@ import ServiceCard from "@/components/ServiceCard";
 import BookButton from "@/components/BookButton";
 import Reveal from "@/components/Reveal";
 import { stratumColor } from "@/components/StratumTag";
-import { serviceCategories, strata } from "@/lib/services";
+import { offeredServices, serviceCategories, strata } from "@/lib/services";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 const shell = "mx-auto w-full max-w-[84rem] px-6 lg:px-12";
 
 export default function ServicesPage() {
+  const offerCount = offeredServices().length;
+
   return (
     <>
       <PageHero
@@ -36,6 +38,15 @@ export default function ServicesPage() {
               {category.title}
             </Link>
           ))}
+          {offerCount > 0 && (
+            <Link
+              href="/offers"
+              className="label ml-auto flex items-center gap-2.5 text-jade transition-colors hover:text-jade-deep"
+            >
+              <span aria-hidden className="h-px w-6 bg-jade" />
+              {offerCount} on offer
+            </Link>
+          )}
         </nav>
       </PageHero>
 

@@ -12,6 +12,12 @@ import { bookingUrlFor, type FeaturedService } from "@/lib/services";
  * where the full menu is a ledger). No "Popular" badge here — every treatment
  * in this section is popular, so the badge would label nothing.
  *
+ * A discounted treatment shows its offer price here too. This section features
+ * the `popular` services and several of those carry an `offer`, so quoting the
+ * list price would have the homepage and the menu naming two different numbers
+ * for the same treatment — on a site whose stated promise is that you see the
+ * price before anything begins.
+ *
  * Services without an `image` still render: the frame fills with sage, so the
  * grid never breaks while photography is being swapped in.
  */
@@ -43,7 +49,13 @@ export default function SignatureServiceCard({
       </div>
 
       <div className="mt-6 flex flex-1 flex-col">
-        <p className="label text-jade">{service.category}</p>
+        <div className="flex items-baseline justify-between gap-3">
+          <p className="label text-jade">{service.category}</p>
+          {/* Names the reason the price below is two numbers instead of one. */}
+          {service.offer && (
+            <p className="label-sm text-jade">{service.offer.saving}</p>
+          )}
+        </div>
         <h3 className="mt-2.5 text-[1.35rem]">{service.name}</h3>
         <p className="mt-2.5 flex-1 text-sm leading-relaxed text-slate">
           {service.description}
@@ -55,7 +67,20 @@ export default function SignatureServiceCard({
             {service.duration}
             {service.spec ? ` · ${service.spec}` : ""}
           </span>
-          <span className="num text-[0.9375rem] text-ink">{service.price}</span>
+          {service.offer ? (
+            <span className="flex items-baseline gap-2">
+              <span className="num text-[0.9375rem] text-jade">
+                {service.offer.price}
+              </span>
+              <span className="num text-[0.75rem] text-muted line-through">
+                {service.price}
+              </span>
+            </span>
+          ) : (
+            <span className="num text-[0.9375rem] text-ink">
+              {service.price}
+            </span>
+          )}
         </div>
 
         <BookButton

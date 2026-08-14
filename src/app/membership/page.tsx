@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     q: "Do member discounts stack with promotions?",
-    a: "Member pricing applies to regular-priced treatments and retail. It can't be combined with limited-time offers — you'll always be charged whichever is lower.",
+    a: "Member pricing applies to regular-priced treatments and retail. It can't be combined with a special offer — you'll always be charged whichever is lower.",
   },
   {
     q: "Can I use my credit on any layer?",
