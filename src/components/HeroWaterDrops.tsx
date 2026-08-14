@@ -173,7 +173,7 @@ export default function HeroWaterDrops() {
     // };
     // v2
     const scheduleDrop = () => {
-      const nextDelay = 300 + Math.random() * 5000; // very mixed
+      const nextDelay = 300 + Math.random() * 3000; // very mixed
       spawnTimer = setTimeout(() => {
         if (!document.hidden && drops.length < 3) spawnDrop();
         scheduleDrop();
@@ -229,26 +229,26 @@ export default function HeroWaterDrops() {
 
     // Ripples trail the pointer, but only across the water — above the surface
     // or past the landing floor there's no surface for them to sit on.
-    const onPointerMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    // const onPointerMove = (e: PointerEvent) => {
+    //   const rect = canvas.getBoundingClientRect();
+    //   const x = e.clientX - rect.left;
+    //   const y = e.clientY - rect.top;
 
-      const insideHero =
-        x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+    //   const insideHero =
+    //     x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
 
-      if (!insideHero) return;
+    //   if (!insideHero) return;
 
-      const isUpperWater = y > surface() - 30 && y < landingFloor() + 50;
-      const isLowerHero = false; // y > H * 0.6 && y < H;
+    //   const isUpperWater = y > surface() - 30 && y < landingFloor() + 50;
+    //   const isLowerHero = false; // y > H * 0.6 && y < H;
 
-      const shouldRipple = isUpperWater || isLowerHero || Math.random() < 0.08;
+    //   const shouldRipple = isUpperWater || isLowerHero || Math.random() < 0.2;
 
-      if (shouldRipple) {
-        spawnRipple(x, Math.min(Math.max(y, 0), H));
-      }
-    };
-    hero?.addEventListener("pointermove", onPointerMove);
+    //   if (shouldRipple) {
+    //     spawnRipple(x, Math.min(Math.max(y, 0), H));
+    //   }
+    // };
+    // hero?.addEventListener("pointermove", onPointerMove);
 
     let raf = 0;
     let last = 0;
@@ -371,7 +371,7 @@ export default function HeroWaterDrops() {
       clearTimeout(spawnTimer);
       clearInterval(ambient);
       observer.disconnect();
-      hero?.removeEventListener("pointermove", onPointerMove);
+      // hero?.removeEventListener("pointermove", onPointerMove);
     };
   }, []);
 
