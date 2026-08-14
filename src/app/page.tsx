@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BookButton from "@/components/BookButton";
+import HeroWaterDrops from "@/components/HeroWaterDrops";
 import SignatureServiceCard from "@/components/SignatureServiceCard";
 import Reveal from "@/components/Reveal";
 import { featuredServices, serviceCategories } from "@/lib/services";
@@ -58,7 +59,10 @@ export default function Home() {
         <div className="animate-float pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-blush/40 blur-3xl" />
         <div className="animate-float-slower pointer-events-none absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-gold/20 blur-3xl" />
 
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
+        {/* Falling water drops + ripples, layered over the glows, under the copy. */}
+        <HeroWaterDrops />
+
+        <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
           <div>
             <p className="hero-enter eyebrow text-gold-dark">{site.city} · Medical Spa</p>
             <h1
@@ -108,8 +112,14 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Hero visual */}
-          <div className="hero-enter relative" style={{ animationDelay: "250ms" }}>
+          {/* Hero visual. `data-hero-photo` is the anchor HeroWaterDrops keeps
+              its water surface above once the hero stacks and this sits below
+              the copy — drops must never land behind the photo. */}
+          <div
+            data-hero-photo
+            className="hero-enter relative"
+            style={{ animationDelay: "250ms" }}
+          >
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-gold/10">
               <Image
                 src="/images/hero.png"

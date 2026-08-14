@@ -10,7 +10,11 @@
       "WebSearch",
       "WebFetch(domain:www.fresha.com)",
       "PowerShell(npm run lint)",
-      "PowerShell(npx eslint . --format stylish; \"EXIT=$LASTEXITCODE\")"
+      "PowerShell(npx eslint . --format stylish; \"EXIT=$LASTEXITCODE\")",
+      "Bash(npx tsc *)",
+      "Bash(mkdir -p c:/Users/kazho/AppData/Local/Temp/claude/c--Users-kazho-OneDrive-Desktop-Claude-projects-FELITI-Fable-5-FELITI/0b066b38-0259-425d-9ab9-d7fa811fc5a7/scratchpad/driver)",
+      "Bash(npm init *)",
+      "Bash(npm i *)"
     ]
   }
 }

@@ -139,6 +139,25 @@ h1, h2, h3, h4 {
   animation: pulseDot 2s ease-in-out infinite;
 }
 
+/* ── Hero water drops ──────────────────────────────────────
+   The canvas spans the whole hero, but HeroWaterDrops only spawns drops over
+   the copy column once the hero splits in two at `lg`. A ripple can still
+   expand out of that band, so the mask dissolves the right-hand side instead
+   of letting rings run under the photo or stop at a hard vertical edge.
+   Below `lg` the hero is one column and the copy is the full width, so there's
+   nothing to mask. */
+@media (min-width: 1024px) {
+  .water-canvas {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      black 0%,
+      black 40%,
+      transparent 52%
+    );
+    mask-image: linear-gradient(to right, black 0%, black 40%, transparent 52%);
+  }
+}
+
 /* Scroll-reveal: hidden until the Reveal component adds .is-visible.
    Kept short and shallow (14px, not 28) so content settles into place as the
    page moves rather than lurching in behind it. No `will-change` here — there
