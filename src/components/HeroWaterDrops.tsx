@@ -21,8 +21,8 @@ const ROSE = "201, 139, 126";
    fixed fraction — the copy block gets proportionally shorter as the viewport
    widens (~55% of the hero at 390px, ~35% at 820px) — so the stacked geometry
    is measured off the photo rather than guessed. */
-const WATER_LINE_WIDE = 0.72;
-const LANDING_SPREAD_WIDE = 0.18;
+const WATER_LINE_WIDE = 0.95;
+const LANDING_SPREAD_WIDE = 0.3;
 /** Clearance above the photo for the surface, and for the lowest landing. */
 const SURFACE_ABOVE_PHOTO = 110;
 const LANDING_ABOVE_PHOTO = 60;
@@ -231,13 +231,21 @@ export default function HeroWaterDrops() {
     // or past the landing floor there's no surface for them to sit on.
     const onPointerMove = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      if (
-        y > surface() - 10 &&
-        y < landingFloor() + 40 &&
-        Math.random() < 0.3
-      ) {
-        spawnRipple(e.clientX - rect.left, y);
+
+      const insideHero =
+        x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+
+      if (!insideHero) return;
+
+      const isUpperWater = y > surface() - 30 && y < landingFloor() + 50;
+      const isLowerHero = false; // y > H * 0.6 && y < H;
+
+      const shouldRipple = isUpperWater || isLowerHero || Math.random() < 0.08;
+
+      if (shouldRipple) {
+        spawnRipple(x, Math.min(Math.max(y, 0), H));
       }
     };
     hero?.addEventListener("pointermove", onPointerMove);
